@@ -8,16 +8,24 @@
     <artifactId>frontendDraft</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependency>
-        <groupId>com.gluonhq</groupId>
-        <artifactId>charm-glisten</artifactId>
-        <version>6.2.0</version>
-    </dependency>
-
     <properties>
-        <maven.compiler.source>26</maven.compiler.source>
-        <maven.compiler.target>26</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>21.0.2</javafx.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>21.0.2</version>
+        </dependency>
+    </dependencies>
 
 </project>

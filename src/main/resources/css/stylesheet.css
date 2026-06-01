@@ -202,13 +202,17 @@ TextField:focused, PasswordField:focused {
 
 /* Refresh Button */
 .refresh-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: -color-accent-border;
+    -fx-background-color: -color-bg-overlay;
+    -fx-background-radius: 40px;
+    -fx-padding: 10px 20px;
     -fx-font-size: 16px;
+    -fx-text-fill: -color-fg-default;
     -fx-font-weight: bold;
-    -fx-background-radius: 20px;
     -fx-cursor: hand;
     -fx-effect: null;
+    -fx-border-radius: 40px;
+    -fx-border-color: -color-border-default;
+    -fx-border-width: 1px;
 }
 
 .refresh-button:hover {
@@ -222,57 +226,31 @@ TextField:focused, PasswordField:focused {
     -fx-text-fill: -color-fg-default;
 }
 
-/* Sync Status Base Pill */
+/* Live Sync Status pill style */
 .sync-status {
+    -fx-background-color: -color-bg-overlay;
+    -fx-background-radius: 40px;
+    -fx-padding: 10px 20px;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-background-radius: 20px;
-    -fx-border-radius: 20px;
-    -fx-padding: 4px 12px;
-    -fx-alignment: CENTER;
-}
-
-/* Sync Status Variants */
-.sync-status.active {
-    -fx-text-fill: -color-accent-border;
-    -fx-background-color: -color-accent-border-alpha;
-    -fx-border-color: -color-accent-border;
+    -fx-effect: null;
+    -fx-border-radius: 40px;
+    -fx-border-color: -color-border-default;
     -fx-border-width: 1px;
 }
 
-.sync-status.inactive {
-    -fx-text-fill: -color-status-inactive;
-    -fx-background-color: -color-status-inactive-alpha;
-    -fx-border-color: -color-status-inactive;
-    -fx-border-width: 1px;
-}
-
-.sync-status.error {
-    -fx-text-fill: -color-status-error;
-    -fx-background-color: -color-status-error-alpha;
-    -fx-border-color: -color-status-error;
-    -fx-border-width: 1px;
-}
-
-.sync-status.warning {
-    -fx-text-fill: -color-status-warning;
-    -fx-background-color: -color-status-warning-alpha;
-    -fx-border-color: -color-status-warning;
-    -fx-border-width: 1px;
-}
-
-.sync-status.connecting {
-    -fx-text-fill: -color-status-connecting;
-    -fx-background-color: -color-status-connecting-alpha;
-    -fx-border-color: -color-status-connecting;
-    -fx-border-width: 1px;
-}
-
-.sync-status.success {
+/* Status variants (set these classes dynamically in controller) */
+.sync-status-live {
+    -fx-background-color: rgba(98, 184, 111, 0.15);
     -fx-text-fill: -color-status-success;
-    -fx-background-color: -color-status-success-alpha;
-    -fx-border-color: -color-status-success;
-    -fx-border-width: 1px;
+}
+.sync-status-offline {
+    -fx-background-color: rgba(240, 71, 71, 0.15);
+    -fx-text-fill: -color-status-error;
+}
+.sync-status-connecting {
+    -fx-background-color: rgba(255, 166, 77, 0.15);
+    -fx-text-fill: -color-status-warning;
 }
 
 /* Cards Container */
@@ -341,15 +319,25 @@ TextField:focused, PasswordField:focused {
 }
 
 .axis {
-    -fx-tick-label-fill: -color-bg-overlay;
+    -fx-tick-label-fill: -color-fg-default;
     -fx-tick-length: 5;
-    -fx-tick-label-font-size: 12px;
+    -fx-tick-label-font-size: 11px;
 }
 
 .chart-bar {
     -fx-bar-fill: -color-accent-border;
     -fx-background-insets: 2px;
     -fx-padding: 5px;
+}
+
+/* Ingress bars (first series) */
+.default-color0.chart-bar {
+    -fx-bar-fill: -color-status-success;
+}
+
+/* Egress bars (second series) */
+.default-color1.chart-bar {
+    -fx-bar-fill: -color-status-error;
 }
 
 .chart-bar:hover {
@@ -361,10 +349,10 @@ TextField:focused, PasswordField:focused {
     -fx-padding: 0 0 15px 0;
 }
 
-.log-row {
+.log-grid-pane > * {
     -fx-border-color: transparent transparent -color-border-default transparent;
     -fx-border-width: 0 0 1px 0;
-    -fx-padding: 12px 0;
+    -fx-background-color: transparent;
 }
 
 /* Section title "Latest log entries" */
@@ -385,6 +373,7 @@ TextField:focused, PasswordField:focused {
     -fx-padding: 0 0 0 10px;
     -fx-alignment: CENTER_RIGHT;
     -fx-effect: null;
+    -fx-underline: true;
 }
 
 .log-see-all:hover {
@@ -414,6 +403,11 @@ TextField:focused, PasswordField:focused {
     -fx-faint-focus-color: -color-accent-border-alpha;
 }
 
+/* Optional: Hover effect for log entries */
+.log-entry:hover {
+    -fx-background-color: rgba(212, 175, 55, 0.05);
+    -fx-cursor: hand;
+}
 /* Log entry name (e.g., "John Michael Santos") */
 .log-name {
     -fx-font-size: 15px;
@@ -429,29 +423,31 @@ TextField:focused, PasswordField:focused {
 }
 
 /* Log entry time text (e.g., "Out 08:15 AM") */
-.log-time {
+.log-time,.log-status {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-accent-border;
+    -fx-text-fill: -color-status-inactive;
 }
 
-/* Optional: Hover effect for log entries */
-.log-entry:hover {
-    -fx-background-color: rgba(212, 175, 55, 0.05);
-    -fx-cursor: hand;
+/* Shared pill background for status and time labels */
+.log-status-in, .log-status-out,
+.log-time-in, .log-time-out {
+    -fx-background-radius: 20px;
+    -fx-padding: 4px 12px;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
 }
 
-/* Status variations for In/Out */
-.log-time.in {
+/* In variant: green background with opacity (adjust alpha as needed) */
+.log-status-in, .log-time-in {
+    -fx-background-color: rgba(98, 184, 111, 0.15);  /* -color-status-success with 15% opacity */
     -fx-text-fill: -color-status-success;
 }
 
-.log-time.out {
-    -fx-text-fill: -color-accent-border;
-}
-
-.log-time.late {
-    -fx-text-fill: -color-status-warning;
+/* Out variant: error red background with opacity */
+.log-status-out, .log-time-out {
+    -fx-background-color: rgba(240, 71, 71, 0.15);   /* -color-status-error with 15% opacity */
+    -fx-text-fill: -color-status-error;
 }
 
 .quick-actions-title {

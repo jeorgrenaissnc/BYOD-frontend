@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.Icon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
@@ -18,7 +17,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1366.0" styleClass="background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
    <top>
       <HBox id="navbar" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" styleClass="navbar" BorderPane.alignment="CENTER">
          <children>
@@ -67,21 +66,15 @@
                   <Insets top="10.0" />
                </HBox.margin>
             </Region>
-            <Button fx:id="accountButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" styleClass="account-button" text="Account" textAlignment="RIGHT" HBox.hgrow="ALWAYS">
+            <Button fx:id="accountButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" styleClass="account-button" text=" 👤 Admin Account " textAlignment="CENTER" HBox.hgrow="ALWAYS">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-               <graphic>
-                  <Icon content="ACCOUNT_CIRCLE" />
-               </graphic>
             </Button>
-            <Button fx:id="logoutButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" styleClass="logout-button" text="Logout">
+            <Button fx:id="logoutButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" styleClass="logout-button" text=" 🚪 Logout ">
                <HBox.margin>
                   <Insets right="60.0" />
                </HBox.margin>
-               <graphic>
-                  <Icon content="EXIT_TO_APP" />
-               </graphic>
             </Button>
          </children>
          <BorderPane.margin>
@@ -90,22 +83,27 @@
       </HBox>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <VBox spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER_LEFT" VBox.vgrow="ALWAYS">
                <children>
                   <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <Label styleClass="title-2" text="Dashboard overview" />
+                        <VBox>
+                           <children>
+                              <Label styleClass="title-2" text="Dashboard overview" />
+                              <Label fx:id="dateLabel" styleClass="description" text="Date" />
+                           </children>
+                        </VBox>
                         <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                        <Label styleClass="sync-status" text="Live Sync Status" />
-                        <Button mnemonicParsing="false" styleClass="refresh-button" text="Refresh">
-                           <graphic>
-                              <Icon content="REFRESH" />
-                           </graphic></Button>
+                        <HBox alignment="BOTTOM_CENTER" spacing="10.0">
+                           <children>
+                              <Label fx:id="syncStatusLabel" styleClass="sync-status" text="⏺ Live Sync Status" />
+                              <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#handleRefresh" styleClass="refresh-button" text="🔄 Refresh" />
+                           </children>
+                        </HBox>
                      </children>
                   </HBox>
-                  <Label styleClass="description" text="Date" />
                </children>
             </VBox>
             <VBox VBox.vgrow="ALWAYS">
@@ -114,35 +112,35 @@
                      <children>
                         <VBox prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
+                              <Label fx:id="totalStudentsLabel" prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Total Registered Students" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Active student BYOD profiles" />
                            </children>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
+                              <Label fx:id="totalDevicesLabel" prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Total Registered Devices" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Approved personal devices" />
                            </children>
                         </VBox>
                         <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
+                              <Label fx:id="devicesInsideLabel" prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Devices Inside Campus" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Currently marked ingress" />
                            </children>
                         </VBox>
                         <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
+                              <Label fx:id="ingressTodayLabel" prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Ingress Today" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Devices checked in today" />
                            </children>
                         </VBox>
                         <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label styleClass="card-number" text="0" />
+                              <Label fx:id="egressTodayLabel" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" styleClass="card-title" text="Egress Today" />
                               <Label layoutX="10.0" layoutY="28.0" styleClass="card-description" text="Devices checked out today" />
                            </children>
@@ -162,7 +160,7 @@
                                     <Label styleClass="chart-title" text="Ingress-Egress activity (last 7 days)" />
                                  </children>
                               </HBox>
-                              <BarChart styleClass="chart">
+                              <BarChart fx:id="activityChart" styleClass="chart">
                                 <xAxis>
                                   <CategoryAxis side="BOTTOM" />
                                 </xAxis>
@@ -172,63 +170,88 @@
                               </BarChart>
                            </children>
                         </VBox>
-                        <VBox styleClass="card">
+                        <VBox styleClass="card" HBox.hgrow="ALWAYS">
                            <children>
                               <HBox alignment="TOP_CENTER" styleClass="log-header">
                                  <children>
                                     <Label styleClass="log-title" text="Latest log entries" HBox.hgrow="ALWAYS" />
                                     <Region HBox.hgrow="ALWAYS" />
-                                    <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" styleClass="log-see-all" text="See all" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="seeAllButton" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleSeeAll" styleClass="log-see-all" text="See all ▶" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <GridPane vgap="10.0" VBox.vgrow="ALWAYS">
-                                <columnConstraints>
-                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
+                              <GridPane alignment="CENTER_LEFT" styleClass="log-grid-pane" VBox.vgrow="ALWAYS">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" minWidth="80.0" prefWidth="80.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="30.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+
                                  <children>
-                                    <VBox>
-                                       <children>
-                                          <Label styleClass="log-name" text="Student name" />
-                                          <Label styleClass="log-id" text="Student number" />
-                                       </children>
+                                    <!-- Row 0 -->
+                                    <VBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                       <Label fx:id="logName0" styleClass="log-name" text="Student name" />
+                                       <Label fx:id="logId0" styleClass="log-id" text="Student number" />
                                     </VBox>
-                                    <Label styleClass="log-time" text="Status" GridPane.columnIndex="1" />
-                                    <VBox layoutX="10.0" layoutY="5.0" GridPane.rowIndex="1">
+                                    <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1">
                                        <children>
-                                          <Label styleClass="log-name" text="Student name" />
-                                          <Label styleClass="log-id" text="Student number" />
+                                          <Label fx:id="logStatus0" styleClass="log-status" text="Status" />
+                                          <Label fx:id="logTime0" styleClass="log-time" text="Status" />
                                        </children>
+                                    </HBox>
+
+                                    <!-- Row 1 -->
+                                    <VBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                       <Label fx:id="logName1" styleClass="log-name" text="Student name" />
+                                       <Label fx:id="logId1" styleClass="log-id" text="Student number" />
                                     </VBox>
-                                    <Label layoutX="110.0" layoutY="15.0" styleClass="log-time" text="Status" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <VBox layoutX="10.0" layoutY="36.0" GridPane.rowIndex="2">
+                                    <HBox alignment="CENTER_RIGHT" layoutX="238.0" layoutY="10.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                        <children>
-                                          <Label styleClass="log-name" text="Student name" />
-                                          <Label styleClass="log-id" text="Student number" />
+                                          <Label fx:id="logStatus1" styleClass="log-status" text="Status" />
+                                          <Label fx:id="logTime1" styleClass="log-time" text="Status" />
                                        </children>
+                                    </HBox>
+
+                                    <!-- Row 2 -->
+                                    <VBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                       <Label fx:id="logName2" styleClass="log-name" text="Student name" />
+                                       <Label fx:id="logId2" styleClass="log-id" text="Student number" />
                                     </VBox>
-                                    <Label layoutX="110.0" layoutY="45.0" styleClass="log-time" text="Status" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <VBox layoutX="10.0" layoutY="5.0" GridPane.rowIndex="3">
+                                    <HBox alignment="CENTER_RIGHT" layoutX="238.0" layoutY="55.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                        <children>
-                                          <Label styleClass="log-name" text="Student name" />
-                                          <Label styleClass="log-id" text="Student number" />
+                                          <Label fx:id="logStatus2" styleClass="log-status" text="Status" />
+                                          <Label fx:id="logTime2" styleClass="log-time" text="Status" />
                                        </children>
+                                    </HBox>
+
+                                    <!-- Row 3 -->
+                                    <VBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="3">
+                                       <Label fx:id="logName3" styleClass="log-name" text="Student name" />
+                                       <Label fx:id="logId3" styleClass="log-id" text="Student number" />
                                     </VBox>
-                                    <Label layoutX="10.0" layoutY="15.0" styleClass="log-time" text="Status" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <VBox layoutX="10.0" layoutY="96.0" GridPane.rowIndex="4">
+                                    <HBox alignment="CENTER_RIGHT" layoutX="238.0" layoutY="100.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                        <children>
-                                          <Label styleClass="log-name" text="Student name" />
-                                          <Label styleClass="log-id" text="Student number" />
+                                          <Label fx:id="logStatus3" styleClass="log-status" text="Status" />
+                                          <Label fx:id="logTime3" styleClass="log-time" text="Status" />
                                        </children>
+                                    </HBox>
+
+                                    <!-- Row 4 -->
+                                    <VBox alignment="CENTER_LEFT" GridPane.columnIndex="0" GridPane.rowIndex="4">
+                                       <Label fx:id="logName4" styleClass="log-name" text="Student name" />
+                                       <Label fx:id="logId4" styleClass="log-id" text="Student number" />
                                     </VBox>
-                                    <Label layoutX="110.0" layoutY="106.0" styleClass="log-time" text="Status" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <HBox alignment="CENTER_RIGHT" layoutX="238.0" layoutY="145.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                       <children>
+                                          <Label fx:id="logStatus4" styleClass="log-status" text="Status" />
+                                          <Label fx:id="logTime4" styleClass="log-time" text="Status" />
+                                       </children>
+                                    </HBox>
                                  </children>
                               </GridPane>
                            </children>
@@ -242,31 +265,12 @@
                   <Label styleClass="quick-actions-title" text="Quick Actions" VBox.vgrow="ALWAYS" />
                   <FlowPane hgap="10.0" nodeOrientation="LEFT_TO_RIGHT">
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="action-button" text="Scan QR">
-                           <graphic>
-                              <Icon content="HELP_OUTLINE" />
-                           </graphic>
+                        <Button fx:id="scanQrButton" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#handleScanQr" styleClass="action-button" text="📷 Scan QR">
                         </Button>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Search Records">
-                           <graphic>
-                              <Icon content="HELP_OUTLINE" />
-                           </graphic>
-                        </Button>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Log ingress">
-                           <graphic>
-                              <Icon content="HELP_OUTLINE" />
-                           </graphic>
-                        </Button>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Log egress">
-                           <graphic>
-                              <Icon content="HELP_OUTLINE" />
-                           </graphic>
-                        </Button>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Export daily report">
-                           <graphic>
-                              <Icon content="HELP_OUTLINE" />
-                           </graphic>
-                        </Button>
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" styleClass="action-button" text="🔍 Search Records" />
+                        <Button fx:id="ingressButton" mnemonicParsing="false" onAction="#handleIngress" styleClass="action-button" text="📥 Log ingress" />
+                        <Button fx:id="egressButton" mnemonicParsing="false" onAction="#handleEgress" styleClass="action-button" text="📤 Log egress" />
+                        <Button fx:id="exportButton" mnemonicParsing="false" onAction="#handleExport" styleClass="action-button" text="📄 Export daily report" />
                      </children>
                   </FlowPane>
                </children>
@@ -276,7 +280,7 @@
             <Insets bottom="10.0" left="60.0" right="60.0" />
          </BorderPane.margin>
          <padding>
-            <Insets bottom="20.0" top="10.0" />
+            <Insets bottom="20.0" top="20.0" />
          </padding>
       </VBox>
    </center>
