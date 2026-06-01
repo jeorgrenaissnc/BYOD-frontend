@@ -8,6 +8,12 @@
     <artifactId>frontendDraft</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependency>
+        <groupId>com.gluonhq</groupId>
+        <artifactId>charm-glisten</artifactId>
+        <version>6.2.0</version>
+    </dependency>
+
     <properties>
         <maven.compiler.source>26</maven.compiler.source>
         <maven.compiler.target>26</maven.compiler.target>
