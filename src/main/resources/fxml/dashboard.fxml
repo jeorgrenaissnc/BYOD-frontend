@@ -18,17 +18,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity"
-            maxWidth="-Infinity"
-            minHeight="-Infinity"
-            minWidth="-Infinity"
-            prefHeight="700.0"
-            prefWidth="1200.0"
-            styleClass="background"
-            fx:controller="com.example.dashboard.DashboardController"
-            stylesheets="@../css/stylesheet.css"
-            xmlns="http://javafx.com/javafx/26"
-            xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dashboard.DashboardController">
    <top>
       <HBox id="navbar" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" styleClass="navbar" BorderPane.alignment="CENTER">
          <children>
@@ -124,35 +114,35 @@
                      <children>
                         <VBox prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="#" />
+                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Total Registered Students" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Active student BYOD profiles" />
                            </children>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="#" />
+                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Total Registered Devices" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Approved personal devices" />
                            </children>
                         </VBox>
                         <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="#" />
+                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Devices Inside Campus" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Currently marked ingress" />
                            </children>
                         </VBox>
                         <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label prefWidth="400.0" styleClass="card-number" text="#" />
+                              <Label prefWidth="400.0" styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Ingress Today" />
                               <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Devices checked in today" />
                            </children>
                         </VBox>
                         <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
                            <children>
-                              <Label styleClass="card-number" text="#" />
+                              <Label styleClass="card-number" text="0" />
                               <Label layoutX="10.0" layoutY="10.0" styleClass="card-title" text="Egress Today" />
                               <Label layoutX="10.0" layoutY="28.0" styleClass="card-description" text="Devices checked out today" />
                            </children>
