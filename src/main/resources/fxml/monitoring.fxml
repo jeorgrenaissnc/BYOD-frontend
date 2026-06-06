@@ -1,156 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.Icon?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" styleClass="background" stylesheets="@../css/stylesheet.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.monitoring.MonitoringController">
     <top>
         <HBox id="navbar" alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" styleClass="navbar" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fx:id="logoImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@../assets/byod-logo.png" />
-                    </image>
-                    <HBox.margin>
-                        <Insets left="60.0" />
-                    </HBox.margin>
+                    <Image url="@../assets/byod-logo.png" />
+                    <HBox.margin><Insets left="60.0" /></HBox.margin>
                 </ImageView>
-                <Button fx:id="dashboardButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" styleClass="nav-button" text="Dashboard" textFill="WHITE">
-                    <HBox.margin>
-                        <Insets />
-                    </HBox.margin>
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
+                <Button fx:id="dashboardButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onDashboardClick" prefHeight="50.0" styleClass="nav-button" text="Dashboard" textFill="WHITE">
+                    <padding><Insets left="10.0" right="10.0" /></padding>
                 </Button>
-                <Button fx:id="monitoringButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" styleClass="nav-button" text="Monitoring" textFill="WHITE">
-                    <HBox.margin>
-                        <Insets />
-                    </HBox.margin>
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
+                <Button fx:id="monitoringButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onMonitoringClick" prefHeight="50.0" styleClass="nav-button" text="Monitoring" textFill="WHITE">
+                    <padding><Insets left="10.0" right="10.0" /></padding>
                 </Button>
-                <Button fx:id="registrationButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" styleClass="nav-button" text="Registration" textFill="WHITE">
-                    <HBox.margin>
-                        <Insets />
-                    </HBox.margin>
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
+                <Button fx:id="registrationButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onRegistrationClick" prefHeight="50.0" styleClass="nav-button" text="Registration" textFill="WHITE">
+                    <padding><Insets left="10.0" right="10.0" /></padding>
                 </Button>
-                <Button fx:id="reportsButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" styleClass="nav-button" text="Reports" textFill="WHITE">
-                    <HBox.margin>
-                        <Insets />
-                    </HBox.margin>
-                    <padding>
-                        <Insets left="10.0" right="10.0" />
-                    </padding>
+                <Button fx:id="reportsButton" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#onReportsClick" prefHeight="50.0" styleClass="nav-button" text="Reports" textFill="WHITE">
+                    <padding><Insets left="10.0" right="10.0" /></padding>
                 </Button>
-                <Region fx:id="spacer" HBox.hgrow="ALWAYS">
-                    <HBox.margin>
-                        <Insets top="10.0" />
-                    </HBox.margin>
-                </Region>
-                <Button fx:id="accountButton" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="50.0" styleClass="account-button" text="Account" textAlignment="RIGHT" HBox.hgrow="ALWAYS">
-                    <HBox.margin>
-                        <Insets />
-                    </HBox.margin>
-                    <graphic>
-                        <Icon content="ACCOUNT_CIRCLE" />
-                    </graphic>
-                </Button>
-                <Button fx:id="logoutButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" layoutX="1082.0" layoutY="20.0" mnemonicParsing="false" prefHeight="50.0" styleClass="logout-button" text="Logout">
-                    <HBox.margin>
-                        <Insets right="60.0" />
-                    </HBox.margin>
-                    <graphic>
-                        <Icon content="EXIT_TO_APP" />
-                    </graphic>
+                <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+                <Button fx:id="accountButton" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onAccountClick" prefHeight="50.0" styleClass="account-button" text=" 👤 Admin Account " textAlignment="CENTER" />
+                <Button fx:id="logoutButton" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onLogoutClick" prefHeight="50.0" styleClass="logout-button" text=" 🚪 Logout ">
+                    <HBox.margin><Insets right="60.0" /></HBox.margin>
                 </Button>
             </children>
-            <BorderPane.margin>
-                <Insets />
-            </BorderPane.margin>
         </HBox>
     </top>
     <center>
-        <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
-                <VBox VBox.vgrow="ALWAYS">
-                    <children>
-                        <HBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
-                            <children>
-                                <Label styleClass="title-2" text="Dashboard overview" />
-                                <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                                <Label styleClass="sync-status" text="Live Sync Status" />
-                                <Button mnemonicParsing="false" styleClass="refresh-button" text="Refresh">
-                                    <graphic>
-                                        <Icon content="REFRESH" />
-                                    </graphic></Button>
-                            </children>
-                        </HBox>
-                        <Label styleClass="description" text="Date" />
-                    </children>
+                <!-- Header -->
+                <VBox VBox.vgrow="NEVER">
+                    <HBox alignment="CENTER" spacing="10.0">
+                        <VBox>
+                            <Label styleClass="title-2" text="Devices ingress-egress monitoring" />
+                            <Label styleClass="description" text="Search by student name, ID, or device serial number &amp; view daily logs" />
+                        </VBox>
+                        <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
+                        <Label fx:id="syncStatusLabel" styleClass="sync-status" text="Devices in campus" />
+                    </HBox>
                 </VBox>
-                <VBox VBox.vgrow="ALWAYS">
-                    <children>
-                        <HBox alignment="TOP_CENTER" spacing="10.0">
-                            <children>
-                                <VBox prefWidth="400.0" styleClass="card">
-                                    <children>
-                                        <Label prefWidth="400.0" styleClass="card-number" text="#" />
-                                        <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Total Registered Students" />
-                                        <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Active student BYOD profiles" />
-                                    </children>
-                                </VBox>
-                                <VBox layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
-                                    <children>
-                                        <Label prefWidth="400.0" styleClass="card-number" text="#" />
-                                        <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Total Registered Devices" />
-                                        <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Approved personal devices" />
-                                    </children>
-                                </VBox>
-                                <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
-                                    <children>
-                                        <Label prefWidth="400.0" styleClass="card-number" text="#" />
-                                        <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Devices Inside Campus" />
-                                        <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Currently marked ingress" />
-                                    </children>
-                                </VBox>
-                                <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
-                                    <children>
-                                        <Label prefWidth="400.0" styleClass="card-number" text="#" />
-                                        <Label layoutX="10.0" layoutY="10.0" prefWidth="400.0" styleClass="card-title" text="Ingress Today" />
-                                        <Label layoutX="10.0" layoutY="28.0" prefWidth="400.0" styleClass="card-description" text="Devices checked in today" />
-                                    </children>
-                                </VBox>
-                                <VBox layoutX="230.0" layoutY="10.0" prefWidth="400.0" styleClass="card">
-                                    <children>
-                                        <Label styleClass="card-number" text="#" />
-                                        <Label layoutX="10.0" layoutY="10.0" styleClass="card-title" text="Egress Today" />
-                                        <Label layoutX="10.0" layoutY="28.0" styleClass="card-description" text="Devices checked out today" />
-                                    </children>
-                                </VBox>
-                            </children>
-                        </HBox>
-                    </children>
+
+                <!-- Filters -->
+                <HBox spacing="10.0" VBox.vgrow="NEVER">
+                    <TextField fx:id="searchField" maxWidth="1.7976931348623157E308" onAction="#onSearch" promptText="Search name, student ID, Serial no." styleClass="search-bar" HBox.hgrow="ALWAYS" />
+                    <Button fx:id="allDeviceTypesButton" onAction="#onAllDeviceTypesFilter" styleClass="filter-button" text="All device types" />
+                    <Button fx:id="allStatusButton" onAction="#onAllStatusFilter" styleClass="filter-button" text="All status" />
+                    <Button fx:id="datePickerButton" onAction="#onDatePicker" styleClass="filter-button" text="May 25, 2025">
+                        <graphic><Label text="📆" /></graphic>
+                    </Button>
+                    <Button fx:id="exportLogButton" onAction="#onExportLog" styleClass="filter-button" text="Export Log">
+                        <graphic><Label text="📄" /></graphic>
+                    </Button>
+                    <Button fx:id="logEntryButton" onAction="#onLogEntry" styleClass="filter-button" text="Log Entry">
+                        <graphic><Label text="📥" /></graphic>
+                    </Button>
+                </HBox>
+
+                <!-- Cards -->
+                <VBox VBox.vgrow="NEVER">
+                    <HBox alignment="TOP_CENTER" prefHeight="70.0" spacing="10.0">
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                            <Label fx:id="totalStudentsLabel" styleClass="card-number" text="0" />
+                            <Label styleClass="card-title" text="Total Registered Students" />
+                            <Label styleClass="card-description" text="Active student BYOD profiles" />
+                        </VBox>
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                            <Label fx:id="totalDevicesLabel" styleClass="card-number" text="0" />
+                            <Label styleClass="card-title" text="Total Registered Devices" />
+                            <Label styleClass="card-description" text="Approved personal devices" />
+                        </VBox>
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                            <Label fx:id="devicesInsideLabel" styleClass="card-number" text="0" />
+                            <Label styleClass="card-title" text="Devices Inside Campus" />
+                            <Label styleClass="card-description" text="Currently marked ingress" />
+                        </VBox>
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                            <Label fx:id="ingressTodayLabel" styleClass="card-number" text="0" />
+                            <Label styleClass="card-title" text="Ingress Today" />
+                            <Label styleClass="card-description" text="Devices checked in today" />
+                        </VBox>
+                        <VBox fx:id="egressTodayVBox" prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                            <Label fx:id="egressTodayLabel" styleClass="card-number" text="0" />
+                            <Label styleClass="card-title" text="Egress Today" />
+                            <Label styleClass="card-description" text="Devices checked out today" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Table -->
+                <VBox prefHeight="200.0" prefWidth="100.0" styleClass="card" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="monitoringTableView" maxWidth="1.7976931348623157E308" styleClass="monitoring-table" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="studentNameColumn" minWidth="75.0" prefWidth="350.0" text="Student name" />
+                            <TableColumn fx:id="studentIdColumn" prefWidth="150.0" text="Student ID" />
+                            <TableColumn fx:id="deviceSerialColumn" prefWidth="200.0" text="Device / Serial no." />
+                            <TableColumn fx:id="statusColumn" prefWidth="100.0" text="Status" />
+                            <TableColumn fx:id="lastLogColumn" prefWidth="100.0" text="Last log" />
+                            <TableColumn fx:id="actionsColumn" prefWidth="100.0" text="Actions" />
+                            <TableColumn fx:id="editColumn" prefWidth="100.0" text="Ingress/Egress" />
+                        </columns>
+                    </TableView>
+
+                    <!-- Pagination -->
+                    <HBox VBox.vgrow="ALWAYS">
+                        <Label fx:id="paginationStatusLabel" styleClass="pagination-status" text="Showing 0-0 of 0 log entries today" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <FlowPane hgap="2.0">
+                            <Button fx:id="prevPageButton" onAction="#onPrevPage" styleClass="page-button" text="◀" />
+                            <Button fx:id="page1Button" onAction="#onPage1" styleClass="page-button" text="1" />
+                            <Button fx:id="page2Button" onAction="#onPage2" styleClass="page-button" text="2" />
+                            <Button fx:id="page3Button" onAction="#onPage3" styleClass="page-button" text="3" />
+                            <Button fx:id="ellipsisButton" onAction="#onEllipsis" styleClass="page-button" text="..." />
+                            <Button fx:id="lastPageButton" onAction="#onLastPage" styleClass="page-button" text="0" />
+                            <Button fx:id="nextPageButton" onAction="#onNextPage" styleClass="page-button" text="▶" />
+                        </FlowPane>
+                        <padding><Insets top="5.0" /></padding>
+                    </HBox>
                 </VBox>
             </children>
-            <BorderPane.margin>
-                <Insets bottom="10.0" left="60.0" right="60.0" />
-            </BorderPane.margin>
-            <padding>
-                <Insets bottom="20.0" top="10.0" />
-            </padding>
+            <BorderPane.margin><Insets bottom="10.0" left="60.0" right="60.0" /></BorderPane.margin>
+            <padding><Insets bottom="20.0" top="10.0" /></padding>
         </VBox>
     </center>
 </BorderPane>

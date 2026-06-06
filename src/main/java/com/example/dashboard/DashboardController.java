@@ -182,11 +182,28 @@ public class DashboardController {
     }
 
     // TODO: Implement navigation to other views (Monitoring, Registration, Reports, Account)
-    @FXML private void handleDashboard() { System.out.println("Dashboard"); }
-    @FXML private void handleMonitoring() { System.out.println("Monitoring"); }
+    @FXML private void handleDashboard() {handleRefresh(); }
+    @FXML private void handleMonitoring() {
+        navigateTo();
+    }
     @FXML private void handleRegistration() { System.out.println("Registration"); }
     @FXML private void handleReports() { System.out.println("Reports"); }
     @FXML private void handleAccount() { System.out.println("Account"); }
+
+    private void navigateTo() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/monitoring.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) monitoringButton.getScene().getWindow(); // current stage
+            stage.setScene(new Scene(root));
+            stage.setTitle("Monitoring - BYOD System");
+            stage.setMaximized(true);   // keep full-screen
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Failed to load " + "/fxml/monitoring.fxml");
+        }
+    }
 
     // TODO: Implement full log view when "See all" is clicked
     @FXML private void handleSeeAll() { System.out.println("See all"); }

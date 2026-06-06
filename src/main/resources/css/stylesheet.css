@@ -45,6 +45,11 @@ Label {
     -fx-text-fill: -color-fg-default;
 }
 
+.text{
+    -fx-font-size: 16px;
+    -fx-text-fill: -color-fg-default;
+}
+
 
 TextField, PasswordField {
     -fx-background-color: -color-bg-overlay;
@@ -557,4 +562,164 @@ TextField:focused, PasswordField:focused {
 
 .separator {
     -fx-background-color: -color-border-default;
+}
+.search-bar{
+    -fx-background-color: -color-bg-overlay;
+    -fx-text-fill: -color-fg-muted;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: -color-border-default;
+    -fx-border-width: 1px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: -color-shadow-card;
+    -fx-alignment: LEFT;
+}
+
+.filter-button {
+    -fx-background-color: -color-bg-overlay;
+    -fx-text-fill: -color-fg-default;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: -color-shadow-card;
+    -fx-alignment: CENTER;
+}
+
+.filter-button:hover {
+    -fx-background-color: derive(-color-bg-overlay, -10%);  /* 10% darker */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.2, 0, 2);
+}
+
+.filter-button:pressed {
+    -fx-background-color: derive(-color-bg-overlay, -20%);  /* even darker */
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.3), 6, 0.2, 0, 1);
+    -fx-translate-y: 1px;  /* subtle press-down effect */
+}
+
+.filter-button:focused {
+    -fx-border-color: derive(-color-fg-default, 30%);
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+}
+
+.monitoring-table{
+    -fx-border-color: transparent transparent -color-border-default transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-background-color: transparent;
+}
+
+.pagination-status {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-fg-default;
+    -fx-font-weight: bold;
+    -fx-padding: 0 15 0 0;
+    -fx-alignment: center-left;
+}
+
+.pagination-control {
+    -fx-spacing: 8;
+    -fx-alignment: center;
+}
+
+.page-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: -color-fg-default;
+    -fx-font-size: 12px;
+    -fx-font-weight: normal;
+    -fx-padding: 5 10 5 10;
+    -fx-cursor: hand;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-border-color: -color-accent;
+    -fx-effect: null;
+}
+
+.page-button:hover {
+    -fx-background-color: derive(-color-bg-overlay, -15%);
+    -fx-text-fill: -color-fg-default;
+    -fx-underline: false;
+}
+
+.page-button:pressed {
+    -fx-background-color: derive(-color-bg-overlay, -30%);
+    -fx-effect: innershadow(gaussian, rgba(0,0,0,0.2), 3, 0.2, 0, 1);
+}
+
+.page-button:selected, .page-button.active {
+    -fx-background-color: -color-bg-overlay;
+    -fx-text-fill: -color-primary;
+    -fx-font-weight: bold;
+    -fx-border-color: derive(-color-primary, 20%);
+    -fx-border-width: 1;
+}
+
+.pagination-ellipsis {
+    -fx-text-fill: derive(-color-fg-default, -30%);
+    -fx-font-size: 14px;
+    -fx-padding: 5 5 5 5;
+    -fx-font-weight: normal;
+}
+
+.pagination-bar {
+    -fx-background-color: -color-bg-overlay;
+    -fx-padding: 10 15 10 15;
+    -fx-background-radius: 8;
+    -fx-alignment: center-left;
+    -fx-spacing: 20;
+}
+
+.table-edit {
+    -fx-background-color: -color-bg-overlay;
+    -fx-background-radius: 40px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: null;
+    -fx-max-width: 300px;
+    -fx-alignment: center;
+}
+
+.table-status{
+    -fx-background-color: transparent;
+    -fx-background-radius: 40px;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-effect: null;
+    -fx-max-width: 300px;
+    -fx-alignment: center;
+}
+
+.table-status-in {
+    -fx-text-fill: -color-status-success;
+}
+.table-status-out {
+    -fx-text-fill: -color-status-error;
+}
+
+.table-edit-in {
+    -fx-background-color: rgba(98, 184, 111, 0.15);  /* -color-status-success with 15% opacity */
+    -fx-text-fill: -color-status-success;
+}
+
+.table-edit-out {
+    -fx-background-color: rgba(240, 71, 71, 0.15);   /* -color-status-error with 15% opacity */
+    -fx-text-fill: -color-status-error;
+}
+
+.table-edit:hover {
+    -fx-background-color: -color-bg-overlay;
+    -fx-border-radius: 40px;
+    -fx-border-width: 1;
+    fx-border-color: gray;
+}
+
+.table-action {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+    -fx-max-width: 100px;
 }
