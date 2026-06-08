@@ -77,6 +77,9 @@ public class DashboardController {
         initLogArrays();
         addStylesheetToScene();
         dateLabel.setText(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy").format(LocalDate.now()));
+
+        dashboardButton.getStyleClass().add("active");
+
         loadHardcodedData();
     }
 

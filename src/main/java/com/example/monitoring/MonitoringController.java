@@ -99,6 +99,9 @@ public class MonitoringController implements Initializable {
             loadInitialData();           // TODO: Replace with real data load
             updateCardNumbers();         // TODO: Fetch from backend
             updatePagination();
+
+            monitoringButton.getStyleClass().add("active");
+
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize monitoring view", e);
             showAlert("Initialization Error", "Failed to initialize monitoring view:\n" + e.getMessage());

@@ -34,7 +34,7 @@
     -color-chart-bg: white;
     -color-border-card: lightgray;
 
-    -fx-font-family: "Segoe UI Variable","Segoe UI", system-ui, sans-serif;
+    -fx-font-family: "Segoe UI", system-ui, sans-serif;
     -fx-font-smoothing-type: gray;
 }
 
@@ -165,7 +165,9 @@
     -fx-text-fill: -color-fg-default;
     -fx-font-weight: bold;
     -fx-border-color: -color-bg-overlay;
+    -fx-background-radius: 8px;
     -fx-border-width: 2px;
+    -fx-border-radius: 8px;
 }
 
 .account-button {
@@ -296,9 +298,8 @@
 
 .card-description {
     -fx-font-size: 14px;
-    -fx-text-fill: -color-fg-muted;
+    -fx-text-fill: gray;
     -fx-wrap-text: true;
-    -fx-padding: 5px 0 0 0;
 }
 .card-number-2 {
     -fx-font-size: 28px;
@@ -315,9 +316,8 @@
 
 .card-description-2 {
     -fx-font-size: 14px;
-    -fx-text-fill: -color-fg-muted;
+    -fx-text-fill: gray;
     -fx-wrap-text: true;
-    -fx-padding: 5px 0 0 0;
 }
 /* Chart Styles */
 .chart {
@@ -425,15 +425,14 @@
 }
 
 .log-name {
-    -fx-font-size: 15px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: -color-fg-default;
+    -fx-text-fill: gray;
 }
 
 .log-id {
-    -fx-font-size: 12px;
-    -fx-text-fill: -color-fg-muted;
-    -fx-padding: 2px 0 0 0;
+    -fx-font-size: 14px;
+    -fx-text-fill: gray;
 }
 
 .log-time, .log-status {
