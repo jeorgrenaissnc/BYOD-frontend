@@ -34,7 +34,7 @@
     -color-chart-bg: white;
     -color-border-card: lightgray;
 
-    -fx-font-family: "Arial", sans-serif;
+    -fx-font-family: "Segoe UI Variable","Segoe UI", system-ui, sans-serif;
     -fx-font-smoothing-type: gray;
 }
 
@@ -42,14 +42,7 @@
     -fx-background-color: -color-bg-default;
 }
 
-.label {
-    -fx-font-family: "Arial", sans-serif;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-text-fill: -color-fg-default;
-}
-
-.text {
+.field-label {
     -fx-font-size: 16px;
     -fx-text-fill: -color-fg-default;
 }
@@ -67,7 +60,8 @@
     -fx-prompt-text-fill: #B3B3B3;
 }
 
-TextField:focused, PasswordField:focused {
+.text-field:focused,
+.password-field:focused {
     -fx-border-color: #D4AF37;
     -fx-border-width: 2px;
 }
@@ -302,12 +296,29 @@ TextField:focused, PasswordField:focused {
 
 .card-description {
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
     -fx-text-fill: -color-fg-muted;
     -fx-wrap-text: true;
     -fx-padding: 5px 0 0 0;
 }
+.card-number-2 {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-fg-default;
+}
 
+.card-title-2 {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -color-fg-default;
+    -fx-wrap-text: true;
+}
+
+.card-description-2 {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-fg-muted;
+    -fx-wrap-text: true;
+    -fx-padding: 5px 0 0 0;
+}
 /* Chart Styles */
 .chart {
     -fx-padding: 10px;
@@ -559,7 +570,6 @@ TextField:focused, PasswordField:focused {
     -fx-background-color: -color-bg-overlay;
     -fx-text-fill: -color-fg-muted;
     -fx-font-size: 16px;
-    -fx-font-weight: bold;
     -fx-background-radius: 10px;
     -fx-border-radius: 10px;
     -fx-border-color: -color-border-default;
@@ -574,7 +584,6 @@ TextField:focused, PasswordField:focused {
     -fx-background-color: -color-bg-overlay;
     -fx-text-fill: -color-fg-default;
     -fx-font-size: 16px;
-    -fx-font-weight: bold;
     -fx-background-radius: 10px;
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
@@ -608,7 +617,6 @@ TextField:focused, PasswordField:focused {
 .pagination-status {
     -fx-font-size: 14px;
     -fx-text-fill: -color-fg-default;
-    -fx-font-weight: bold;
     -fx-padding: 0 15px 0 0;
     -fx-alignment: center-left;
 }
@@ -669,7 +677,7 @@ TextField:focused, PasswordField:focused {
 .table-edit {
     -fx-background-color: -color-bg-overlay;
     -fx-background-radius: 40px;
-    -fx-font-size: 12px;
+    -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-effect: null;
     -fx-max-width: 300px;

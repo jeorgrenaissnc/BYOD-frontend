@@ -77,29 +77,29 @@
                 <VBox VBox.vgrow="NEVER">
                     <HBox alignment="TOP_CENTER" prefHeight="70.0" spacing="10.0">
                         <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
-                            <Label fx:id="totalStudentsLabel" styleClass="card-number" text="0" />
-                            <Label styleClass="card-title" text="Total Registered Students" />
-                            <Label styleClass="card-description" text="Active student BYOD profiles" />
+                            <Label fx:id="totalStudentsLabel" styleClass="card-number-2" text="0" />
+                            <Label styleClass="card-title-2" text="Total Registered Students" />
+                            <Label styleClass="card-description-2" text="Active student BYOD profiles" />
                         </VBox>
                         <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
-                            <Label fx:id="totalDevicesLabel" styleClass="card-number" text="0" />
-                            <Label styleClass="card-title" text="Total Registered Devices" />
-                            <Label styleClass="card-description" text="Approved personal devices" />
+                            <Label fx:id="totalDevicesLabel" styleClass="card-number-2" text="0" />
+                            <Label styleClass="card-title-2" text="Total Registered Devices" />
+                            <Label styleClass="card-description-2" text="Approved personal devices" />
                         </VBox>
                         <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
-                            <Label fx:id="devicesInsideLabel" styleClass="card-number" text="0" />
-                            <Label styleClass="card-title" text="Devices Inside Campus" />
-                            <Label styleClass="card-description" text="Currently marked ingress" />
+                            <Label fx:id="devicesInsideLabel" styleClass="card-number-2" text="0" />
+                            <Label styleClass="card-title-2" text="Devices Inside Campus" />
+                            <Label styleClass="card-description-2" text="Currently marked ingress" />
                         </VBox>
                         <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
-                            <Label fx:id="ingressTodayLabel" styleClass="card-number" text="0" />
-                            <Label styleClass="card-title" text="Ingress Today" />
-                            <Label styleClass="card-description" text="Devices checked in today" />
+                            <Label fx:id="ingressTodayLabel" styleClass="card-number-2" text="0" />
+                            <Label styleClass="card-title-2" text="Ingress Today" />
+                            <Label styleClass="card-description-2" text="Devices checked in today" />
                         </VBox>
                         <VBox fx:id="egressTodayVBox" prefHeight="100.0" prefWidth="400.0" styleClass="card">
-                            <Label fx:id="egressTodayLabel" styleClass="card-number" text="0" />
-                            <Label styleClass="card-title" text="Egress Today" />
-                            <Label styleClass="card-description" text="Devices checked out today" />
+                            <Label fx:id="egressTodayLabel" styleClass="card-number-2" text="0" />
+                            <Label styleClass="card-title-2" text="Egress Today" />
+                            <Label styleClass="card-description-2" text="Devices checked out today" />
                         </VBox>
                     </HBox>
                 </VBox>
@@ -122,7 +122,7 @@
                     <HBox VBox.vgrow="ALWAYS">
                         <Label fx:id="paginationStatusLabel" styleClass="pagination-status" text="Showing 0-0 of 0 log entries today" />
                         <Region HBox.hgrow="ALWAYS" />
-                        <FlowPane hgap="2.0">
+                        <FlowPane alignment="TOP_RIGHT" columnHalignment="RIGHT" hgap="2.0" HBox.hgrow="NEVER">
                             <Button fx:id="prevPageButton" onAction="#onPrevPage" styleClass="page-button" text="◀" />
                             <Button fx:id="page1Button" onAction="#onPage1" styleClass="page-button" text="1" />
                             <Button fx:id="page2Button" onAction="#onPage2" styleClass="page-button" text="2" />
