@@ -62,8 +62,9 @@
 
 .text-field:focused,
 .password-field:focused {
-    -fx-border-color: #D4AF37;
-    -fx-border-width: 2px;
+    -fx-border-color: -color-accent-border;
+    -fx-effect: -color-shadow-card-hover;
+    -fx-cursor: hand;
 }
 
 /* Class selectors for specific elements */
@@ -93,12 +94,13 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-background-radius: 10px;
-    -fx-padding: 8px 20px;
+    -fx-padding: 10px 20px;
     -fx-cursor: hand;
 }
 
 .login-button:hover {
     -fx-background-color: -color-accent-hover;
+
 }
 
 .login-button:pressed {
@@ -115,7 +117,7 @@
     -fx-border-radius: 10px;
     -fx-border-width: 1px;
     -fx-background-radius: 10px;
-    -fx-padding: 8px 20px;
+    -fx-padding: 10px 20px;
     -fx-cursor: hand;
 }
 
@@ -276,6 +278,16 @@
     -fx-padding: 20px;
 }
 
+.card-2 {
+    -fx-background-color: -color-bg-overlay;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+    -fx-border-color: -color-border-card;
+    -fx-border-width: 1px;
+    -fx-effect: -color-shadow-card;
+    -fx-padding: 14px;
+}
+
 .card:hover {
     -fx-border-color: -color-accent-border;
     -fx-effect: -color-shadow-card-hover;
@@ -284,13 +296,13 @@
 
 /* Card Typography */
 .card-number {
-    -fx-font-size: 36px;
+    -fx-font-size: 38px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-fg-default;
 }
 
 .card-title {
-    -fx-font-size: 18px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-fg-default;
     -fx-wrap-text: true;
@@ -311,12 +323,6 @@
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-fg-default;
-    -fx-wrap-text: true;
-}
-
-.card-description-2 {
-    -fx-font-size: 14px;
-    -fx-text-fill: gray;
     -fx-wrap-text: true;
 }
 /* Chart Styles */
@@ -634,7 +640,7 @@
     -fx-background-radius: 6px;
     -fx-border-radius: 6px;
     -fx-border-width: 1px;
-    -fx-border-color: -color-accent;
+    -fx-border-color: lightgray;
     -fx-effect: null;
 }
 

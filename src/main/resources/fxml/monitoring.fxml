@@ -53,7 +53,7 @@
                             <Label styleClass="description" text="Search by student name, ID, or device serial number &amp; view daily logs" />
                         </VBox>
                         <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                        <Label fx:id="syncStatusLabel" styleClass="sync-status" text="Devices in campus" />
+                        <Label fx:id="syncNoDevices" styleClass="sync-status" text="Devices in campus" />
                     </HBox>
                 </VBox>
 
@@ -76,30 +76,25 @@
                 <!-- Cards -->
                 <VBox VBox.vgrow="NEVER">
                     <HBox alignment="TOP_CENTER" prefHeight="70.0" spacing="10.0">
-                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card-2">
                             <Label fx:id="totalStudentsLabel" styleClass="card-number-2" text="0" />
                             <Label styleClass="card-title-2" text="Total Registered Students" />
-                            <Label styleClass="card-description-2" text="Active student BYOD profiles" />
                         </VBox>
-                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card-2">
                             <Label fx:id="totalDevicesLabel" styleClass="card-number-2" text="0" />
                             <Label styleClass="card-title-2" text="Total Registered Devices" />
-                            <Label styleClass="card-description-2" text="Approved personal devices" />
                         </VBox>
-                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card-2">
                             <Label fx:id="devicesInsideLabel" styleClass="card-number-2" text="0" />
                             <Label styleClass="card-title-2" text="Devices Inside Campus" />
-                            <Label styleClass="card-description-2" text="Currently marked ingress" />
                         </VBox>
-                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                        <VBox prefHeight="100.0" prefWidth="400.0" styleClass="card-2">
                             <Label fx:id="ingressTodayLabel" styleClass="card-number-2" text="0" />
                             <Label styleClass="card-title-2" text="Ingress Today" />
-                            <Label styleClass="card-description-2" text="Devices checked in today" />
                         </VBox>
-                        <VBox fx:id="egressTodayVBox" prefHeight="100.0" prefWidth="400.0" styleClass="card">
+                        <VBox fx:id="egressTodayVBox" prefHeight="100.0" prefWidth="400.0" styleClass="card-2">
                             <Label fx:id="egressTodayLabel" styleClass="card-number-2" text="0" />
                             <Label styleClass="card-title-2" text="Egress Today" />
-                            <Label styleClass="card-description-2" text="Devices checked out today" />
                         </VBox>
                     </HBox>
                 </VBox>
@@ -116,6 +111,9 @@
                             <TableColumn fx:id="actionsColumn" prefWidth="100.0" text="Actions" />
                             <TableColumn fx:id="editColumn" prefWidth="100.0" text="Ingress/Egress" />
                         </columns>
+                  <columnResizePolicy>
+                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
                     </TableView>
 
                     <!-- Pagination -->

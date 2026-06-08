@@ -47,7 +47,7 @@ public class MonitoringController implements Initializable {
     @FXML private Button logoutButton;
 
     // ==================== STATUS & FILTERS ====================
-    @FXML private Label syncStatusLabel;
+    @FXML private Label syncNoDevices;          // changed from syncStatusLabel
     @FXML private TextField searchField;
     @FXML private Button allDeviceTypesButton;
     @FXML private Button allStatusButton;
@@ -459,7 +459,7 @@ public class MonitoringController implements Initializable {
                     "S" + (10000 + i),
                     "SN-ABC-" + i,
                     status,
-                    "2025-05-25 08:" + (i % 60)
+                    "2026-01-25 08:" + (i % 60)
             ));
         }
     }
@@ -479,8 +479,10 @@ public class MonitoringController implements Initializable {
         devicesInsideLabel.setText("342");
         ingressTodayLabel.setText("156");
         egressTodayLabel.setText("98");
-        syncStatusLabel.setText("⏺ Live");
-        syncStatusLabel.getStyleClass().add("sync-status-live");
+
+        // Display the number of devices currently inside the campus
+        syncNoDevices.setText("Devices in campus: " + devicesInsideLabel.getText());
+        syncNoDevices.getStyleClass().add("sync-status-live");
     }
 
     // ==================== HELPER METHODS ====================
