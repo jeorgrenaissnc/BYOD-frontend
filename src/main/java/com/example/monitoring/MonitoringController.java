@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -80,18 +79,23 @@ public class MonitoringController implements Initializable {
     // ==================== INITIALIZATION ====================
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setupTableColumns();
-        setupSearchListener();
-        loadInitialData();           // TODO: Replace with real data load
-        updateCardNumbers();         // TODO: Fetch from backend
-        updatePagination();
+        try {
+            setupTableColumns();
+            setupSearchListener();
+            loadInitialData();           // TODO: Replace with real data load
+            updateCardNumbers();         // TODO: Fetch from backend
+            updatePagination();
 
-        Platform.runLater(() -> {
-            Stage stage = (Stage) monitoringButton.getScene().getWindow();
-            if (stage != null) {
-                stage.setMaximized(true);
-            }
-        });
+            Platform.runLater(() -> {
+                Stage stage = (Stage) monitoringButton.getScene().getWindow();
+                if (stage != null) {
+                    stage.setMaximized(true);
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Initialization Error", "Failed to initialize monitoring view:\n" + e.getMessage());
+        }
     }
 
     // ==================== TABLE SETUP ====================
@@ -107,9 +111,9 @@ public class MonitoringController implements Initializable {
             @Override
             protected void updateItem(String status, boolean empty) {
                 super.updateItem(status, empty);
+                getStyleClass().removeAll("table-status", "table-status-in", "table-status-out");
                 if (empty || status == null) {
                     setText(null);
-                    getStyleClass().add("table-status");
                 } else {
                     setText(status);
                     getStyleClass().add("table-status");
@@ -129,13 +133,17 @@ public class MonitoringController implements Initializable {
                 historyButton.getStyleClass().add("table-action");
                 historyButton.setOnAction(e -> {
                     LogEntry entry = getTableView().getItems().get(getIndex());
-                    onViewHistory(entry);
+                    if (entry != null) onViewHistory(entry);
                 });
             }
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : historyButton);
+                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(historyButton);
+                }
             }
         });
 
@@ -148,32 +156,29 @@ public class MonitoringController implements Initializable {
                 egressButton.getStyleClass().add("table-edit");
                 ingressButton.setOnAction(e -> {
                     LogEntry entry = getTableView().getItems().get(getIndex());
-                    onMarkIngress(entry);
+                    if (entry != null) onMarkIngress(entry);
                 });
                 egressButton.setOnAction(e -> {
                     LogEntry entry = getTableView().getItems().get(getIndex());
-                    onMarkEgress(entry);
+                    if (entry != null) onMarkEgress(entry);
                 });
             }
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
+                    return;
+                }
+                LogEntry entry = getTableView().getItems().get(getIndex());
+                if ("Ingress".equalsIgnoreCase(entry.getStatus())) {
+                    egressButton.getStyleClass().removeAll("table-edit-in", "table-edit-out");
+                    egressButton.getStyleClass().add("table-edit-out");
+                    setGraphic(egressButton);
                 } else {
-                    LogEntry entry = getTableView().getItems().get(getIndex());
-                    // Determine which button to show and apply appropriate CSS class
-                    if ("Ingress".equalsIgnoreCase(entry.getStatus())) {
-                        // Currently Ingress -> show Egress button with table-edit-out style
-                        egressButton.getStyleClass().removeAll("table-edit-in", "table-edit-out");
-                        egressButton.getStyleClass().add("table-edit-out");
-                        setGraphic(egressButton);
-                    } else {
-                        // Currently Egress -> show Ingress button with table-edit-in style
-                        ingressButton.getStyleClass().removeAll("table-edit-in", "table-edit-out");
-                        ingressButton.getStyleClass().add("table-edit-in");
-                        setGraphic(ingressButton);
-                    }
+                    ingressButton.getStyleClass().removeAll("table-edit-in", "table-edit-out");
+                    ingressButton.getStyleClass().add("table-edit-in");
+                    setGraphic(ingressButton);
                 }
             }
         });
@@ -329,23 +334,29 @@ public class MonitoringController implements Initializable {
     }
 
     @FXML private void onPage1() {
-        int page = Integer.parseInt(page1Button.getText());
-        if (page != currentPage) {
-            currentPage = page;
-            updatePagination();
-        }
+        try {
+            int page = Integer.parseInt(page1Button.getText());
+            if (page != currentPage && page >= 1 && page <= totalPages) {
+                currentPage = page;
+                updatePagination();
+            }
+        } catch (NumberFormatException ignored) {}
     }
 
     @FXML private void onPage2() {
         if (page2Button.isDisabled()) return;
-        currentPage = Integer.parseInt(page2Button.getText());
-        updatePagination();
+        try {
+            currentPage = Integer.parseInt(page2Button.getText());
+            updatePagination();
+        } catch (NumberFormatException ignored) {}
     }
 
     @FXML private void onPage3() {
         if (page3Button.isDisabled()) return;
-        currentPage = Integer.parseInt(page3Button.getText());
-        updatePagination();
+        try {
+            currentPage = Integer.parseInt(page3Button.getText());
+            updatePagination();
+        } catch (NumberFormatException ignored) {}
     }
 
     @FXML private void onEllipsis() {
