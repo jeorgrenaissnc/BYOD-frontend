@@ -97,12 +97,12 @@
                <VBox styleClass="card" HBox.hgrow="ALWAYS">
                   <Label styleClass="chart-title" text="Ingress-Egress activity (last 7 days)" />
                   <BarChart fx:id="activityChart" styleClass="chart">
-                     <xAxis><CategoryAxis side="BOTTOM" /></xAxis>
+                     <xAxis><CategoryAxis side="BOTTOM" styleClass="axis-label" /></xAxis>
                      <yAxis><NumberAxis side="LEFT" /></yAxis>
                   </BarChart>
                </VBox>
                <VBox styleClass="card" HBox.hgrow="ALWAYS">
-                  <HBox alignment="TOP_CENTER" styleClass="log-header">
+                  <HBox styleClass="log-header">
                      <Label styleClass="log-title" text="Latest log entries" HBox.hgrow="ALWAYS" />
                      <Region HBox.hgrow="ALWAYS" />
                      <Button fx:id="seeAllButton" onAction="#handleSeeAll" styleClass="log-see-all" text="See all ▶" />

@@ -259,6 +259,30 @@ public class MonitoringController implements Initializable {
         lastPageButton.setDisable(currentPage >= totalPages);
         prevPageButton.setDisable(currentPage == 1);
         nextPageButton.setDisable(currentPage >= totalPages);
+
+        // Highlight the active page button
+        updateActivePageButton();
+    }
+
+    private void updateActivePageButton() {
+        // Remove active class from all page buttons
+        page1Button.getStyleClass().remove("active");
+        page2Button.getStyleClass().remove("active");
+        page3Button.getStyleClass().remove("active");
+        lastPageButton.getStyleClass().remove("active");
+
+        // Determine which button corresponds to the current page
+        String currentPageStr = String.valueOf(currentPage);
+
+        if (currentPageStr.equals(page1Button.getText())) {
+            page1Button.getStyleClass().add("active");
+        } else if (currentPageStr.equals(page2Button.getText())) {
+            page2Button.getStyleClass().add("active");
+        } else if (currentPageStr.equals(page3Button.getText())) {
+            page3Button.getStyleClass().add("active");
+        } else if (currentPageStr.equals(lastPageButton.getText())) {
+            lastPageButton.getStyleClass().add("active");
+        }
     }
 
     // ==================== NAVIGATION ====================

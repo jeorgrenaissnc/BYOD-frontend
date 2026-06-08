@@ -364,7 +364,7 @@
 
 .log-header {
     -fx-alignment: CENTER_LEFT;
-    -fx-padding: 0 0 15px 0;
+    -fx-padding: 0 0 10px 0;
 }
 
 .log-grid-pane > * {
@@ -381,12 +381,11 @@
 
 .log-see-all {
     -fx-text-fill: -color-accent;
-    -fx-font-size: 13px;
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-cursor: hand;
     -fx-background-color: transparent;
     -fx-background-radius: 0;
-    -fx-padding: 0 0 0 10px;
     -fx-alignment: CENTER_RIGHT;
     -fx-effect: null;
     -fx-underline: true;
@@ -651,11 +650,14 @@
 }
 
 .page-button:selected, .page-button.active {
-    -fx-background-color: -color-bg-overlay;
+    -fx-background-color: -color-status-error-alpha;
     -fx-text-fill: -color-primary;
     -fx-font-weight: bold;
     -fx-border-color: derive(-color-primary, 20%);
+    -fx-border-color: -color-accent;
     -fx-border-width: 1px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
 }
 
 .pagination-ellipsis {
@@ -672,7 +674,10 @@
     -fx-alignment: center-left;
     -fx-spacing: 20px;
 }
-
+.table-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: -color-fg-default;
+}
 .table-edit {
     -fx-background-color: -color-bg-overlay;
     -fx-background-radius: 40px;
