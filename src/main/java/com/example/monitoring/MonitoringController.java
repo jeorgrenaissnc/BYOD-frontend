@@ -16,12 +16,26 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Controller for the Monitoring view.
  * Displays device logs with search, filtering, pagination, and card summaries.
  */
 public class MonitoringController implements Initializable {
+
+    private static final Logger LOGGER = Logger.getLogger(MonitoringController.class.getName());
+    private static final String STYLESHEET_PATH = "/css/stylesheet.css";
+    private static final String DASHBOARD_FXML = "/fxml/Dashboard.fxml";
+    private static final String REGISTRATION_FXML = "/fxml/Registration.fxml";
+    private static final String REPORTS_FXML = "/fxml/Reports.fxml";
+    private static final String ACCOUNT_FXML = "/fxml/Account.fxml";
+    private static final String LOGIN_FXML = "/fxml/Login.fxml";
+
+    private static final String STATUS_INGRESS = "Ingress";
+    private static final String STATUS_EGRESS = "Egress";
+    private static final int ROWS_PER_PAGE = 10;
 
     // ==================== NAVIGATION BAR ====================
     @FXML private ImageView logoImage;
@@ -69,10 +83,9 @@ public class MonitoringController implements Initializable {
     @FXML private Button nextPageButton;
 
     // ==================== DATA MODELS ====================
-    private ObservableList<LogEntry> allLogEntries = FXCollections.observableArrayList();
-    private ObservableList<LogEntry> currentPageData = FXCollections.observableArrayList();
+    private final ObservableList<LogEntry> allLogEntries = FXCollections.observableArrayList();
+    private final ObservableList<LogEntry> currentPageData = FXCollections.observableArrayList();
     private int currentPage = 1;
-    private final int rowsPerPage = 10;
     private int totalPages = 1;
     private int totalItems = 0;
 
@@ -80,21 +93,27 @@ public class MonitoringController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
+            addStylesheetToScene();
             setupTableColumns();
             setupSearchListener();
             loadInitialData();           // TODO: Replace with real data load
             updateCardNumbers();         // TODO: Fetch from backend
             updatePagination();
-
-            Platform.runLater(() -> {
-                Stage stage = (Stage) monitoringButton.getScene().getWindow();
-                if (stage != null) {
-                    stage.setMaximized(true);
-                }
-            });
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to initialize monitoring view", e);
             showAlert("Initialization Error", "Failed to initialize monitoring view:\n" + e.getMessage());
+        }
+    }
+
+    private void addStylesheetToScene() {
+        Scene scene = monitoringButton.getScene();
+        if (scene != null) {
+            String css = getClass().getResource(STYLESHEET_PATH).toExternalForm();
+            if (!scene.getStylesheets().contains(css)) {
+                scene.getStylesheets().add(css);
+            }
+        } else {
+            LOGGER.warning("Scene not available for stylesheet injection");
         }
     }
 
@@ -105,9 +124,9 @@ public class MonitoringController implements Initializable {
         deviceSerialColumn.setCellValueFactory(new PropertyValueFactory<>("deviceSerial"));
         lastLogColumn.setCellValueFactory(new PropertyValueFactory<>("lastLog"));
 
-        // Status column with custom CSS classes: table-status-in / table-status-out
+        // Status column with custom CSS classes
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        statusColumn.setCellFactory(col -> new TableCell<LogEntry, String>() {
+        statusColumn.setCellFactory(col -> new TableCell<>() {
             @Override
             protected void updateItem(String status, boolean empty) {
                 super.updateItem(status, empty);
@@ -117,9 +136,9 @@ public class MonitoringController implements Initializable {
                 } else {
                     setText(status);
                     getStyleClass().add("table-status");
-                    if ("Ingress".equalsIgnoreCase(status)) {
+                    if (STATUS_INGRESS.equalsIgnoreCase(status)) {
                         getStyleClass().add("table-status-in");
-                    } else if ("Egress".equalsIgnoreCase(status)) {
+                    } else if (STATUS_EGRESS.equalsIgnoreCase(status)) {
                         getStyleClass().add("table-status-out");
                     }
                 }
@@ -147,7 +166,7 @@ public class MonitoringController implements Initializable {
             }
         });
 
-        // Edit column – quick Ingress/Egress toggle with CSS classes table-edit-in / table-edit-out
+        // Edit column – quick Ingress/Egress toggle
         editColumn.setCellFactory(param -> new TableCell<>() {
             private final Button ingressButton = new Button("📥 In");
             private final Button egressButton = new Button("📤 Out");
@@ -171,7 +190,7 @@ public class MonitoringController implements Initializable {
                     return;
                 }
                 LogEntry entry = getTableView().getItems().get(getIndex());
-                if ("Ingress".equalsIgnoreCase(entry.getStatus())) {
+                if (STATUS_INGRESS.equalsIgnoreCase(entry.getStatus())) {
                     egressButton.getStyleClass().removeAll("table-edit-in", "table-edit-out");
                     egressButton.getStyleClass().add("table-edit-out");
                     setGraphic(egressButton);
@@ -200,12 +219,11 @@ public class MonitoringController implements Initializable {
                         entry.getDeviceSerial().toLowerCase().contains(searchTerm)
         );
         totalItems = filtered.size();
-        totalPages = (int) Math.ceil((double) totalItems / rowsPerPage);
-        if (totalPages == 0) totalPages = 1;
+        totalPages = Math.max(1, (int) Math.ceil((double) totalItems / ROWS_PER_PAGE));
         if (currentPage > totalPages) currentPage = totalPages;
 
-        int fromIndex = (currentPage - 1) * rowsPerPage;
-        int toIndex = Math.min(fromIndex + rowsPerPage, totalItems);
+        int fromIndex = (currentPage - 1) * ROWS_PER_PAGE;
+        int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, totalItems);
         if (fromIndex < toIndex) {
             currentPageData.setAll(filtered.subList(fromIndex, toIndex));
         } else {
@@ -221,9 +239,8 @@ public class MonitoringController implements Initializable {
     }
 
     private void updatePaginationStatus() {
-        int start = (currentPage - 1) * rowsPerPage + 1;
-        int end = Math.min(currentPage * rowsPerPage, totalItems);
-        if (totalItems == 0) start = 0;
+        int start = totalItems == 0 ? 0 : (currentPage - 1) * ROWS_PER_PAGE + 1;
+        int end = Math.min(currentPage * ROWS_PER_PAGE, totalItems);
         paginationStatusLabel.setText(String.format("Showing %d-%d of %d log entries today", start, end, totalItems));
     }
 
@@ -231,14 +248,14 @@ public class MonitoringController implements Initializable {
         page1Button.setText(String.valueOf(currentPage));
         page2Button.setText(String.valueOf(Math.min(currentPage + 1, totalPages)));
         page3Button.setText(String.valueOf(Math.min(currentPage + 2, totalPages)));
-        page1Button.setDisable(currentPage == totalPages);
+        page1Button.setDisable(currentPage >= totalPages);
         page2Button.setDisable(currentPage + 1 > totalPages);
         page3Button.setDisable(currentPage + 2 > totalPages);
         ellipsisButton.setVisible(totalPages > 3 && currentPage + 2 < totalPages);
         lastPageButton.setText(String.valueOf(totalPages));
-        lastPageButton.setDisable(currentPage == totalPages);
+        lastPageButton.setDisable(currentPage >= totalPages);
         prevPageButton.setDisable(currentPage == 1);
-        nextPageButton.setDisable(currentPage == totalPages);
+        nextPageButton.setDisable(currentPage >= totalPages);
     }
 
     // ==================== NAVIGATION ====================
@@ -246,20 +263,24 @@ public class MonitoringController implements Initializable {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
+
             Stage stage = (Stage) monitoringButton.getScene().getWindow();
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.setTitle(title);
-            stage.setMaximized(true);
-            stage.show();
+            // Do NOT force maximized – respect the FXML's preferred size
+            stage.setMaximized(false);
+            stage.centerOnScreen();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Navigation error to " + fxmlPath, e);
             showAlert("Navigation Error", "Could not load " + fxmlPath);
         }
     }
 
     // ==================== BUTTON ACTIONS ====================
     @FXML private void onDashboardClick() {
-        navigateTo("/fxml/Dashboard.fxml", "Dashboard - BYOD System");
+        navigateTo(DASHBOARD_FXML, "Dashboard - BYOD System");
     }
 
     @FXML private void onMonitoringClick() {
@@ -267,31 +288,38 @@ public class MonitoringController implements Initializable {
     }
 
     @FXML private void onRegistrationClick() {
-        navigateTo("/fxml/Registration.fxml", "Device Registration - BYOD System");
+        navigateTo(REGISTRATION_FXML, "Device Registration - BYOD System");
     }
 
     @FXML private void onReportsClick() {
-        navigateTo("/fxml/Reports.fxml", "Reports - BYOD System");
+        navigateTo(REPORTS_FXML, "Reports - BYOD System");
     }
 
     @FXML private void onAccountClick() {
-        navigateTo("/fxml/Account.fxml", "Account Settings - BYOD System");
+        navigateTo(ACCOUNT_FXML, "Account Settings - BYOD System");
     }
 
     @FXML private void onLogoutClick() {
         Stage stage = (Stage) logoutButton.getScene().getWindow();
-        stage.close();
+        if (stage != null) stage.close();
+        loadLoginScreen();
+    }
+
+    private void loadLoginScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(LOGIN_FXML));
             Parent root = loader.load();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
+
             Stage loginStage = new Stage();
-            loginStage.setScene(new Scene(root));
+            loginStage.setScene(scene);
             loginStage.setTitle("BYOD Monitoring System - Login");
             loginStage.setResizable(false);
             loginStage.centerOnScreen();
             loginStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to load login screen", e);
         }
     }
 
@@ -301,29 +329,29 @@ public class MonitoringController implements Initializable {
 
     @FXML private void onAllDeviceTypesFilter() {
         // TODO: Implement device type filter
-        System.out.println("Filter by device type - NOT IMPLEMENTED");
+        LOGGER.info("Filter by device type - NOT IMPLEMENTED");
         filterAndPaginate();
     }
 
     @FXML private void onAllStatusFilter() {
         // TODO: Implement status filter (All, Ingress, Egress)
-        System.out.println("Filter by status - NOT IMPLEMENTED");
+        LOGGER.info("Filter by status - NOT IMPLEMENTED");
         filterAndPaginate();
     }
 
     @FXML private void onDatePicker() {
         // TODO: Date picker dialog
-        System.out.println("Date picker - NOT IMPLEMENTED");
+        LOGGER.info("Date picker - NOT IMPLEMENTED");
     }
 
     @FXML private void onExportLog() {
         // TODO: Export to CSV/Excel
-        System.out.println("Export log - NOT IMPLEMENTED");
+        LOGGER.info("Export log - NOT IMPLEMENTED");
     }
 
     @FXML private void onLogEntry() {
         // TODO: Manual log entry dialog
-        System.out.println("Manual log entry - NOT IMPLEMENTED");
+        LOGGER.info("Manual log entry - NOT IMPLEMENTED");
     }
 
     @FXML private void onPrevPage() {
@@ -340,7 +368,7 @@ public class MonitoringController implements Initializable {
                 currentPage = page;
                 updatePagination();
             }
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) { }
     }
 
     @FXML private void onPage2() {
@@ -348,7 +376,7 @@ public class MonitoringController implements Initializable {
         try {
             currentPage = Integer.parseInt(page2Button.getText());
             updatePagination();
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) { }
     }
 
     @FXML private void onPage3() {
@@ -356,7 +384,7 @@ public class MonitoringController implements Initializable {
         try {
             currentPage = Integer.parseInt(page3Button.getText());
             updatePagination();
-        } catch (NumberFormatException ignored) {}
+        } catch (NumberFormatException ignored) { }
     }
 
     @FXML private void onEllipsis() {
@@ -379,29 +407,31 @@ public class MonitoringController implements Initializable {
     // ==================== TABLE ACTION HANDLERS ====================
     private void onViewHistory(LogEntry entry) {
         // TODO: Show student/device history dialog
-        System.out.println("View history for: " + entry);
+        LOGGER.info("View history for: " + entry);
     }
 
     private void onMarkIngress(LogEntry entry) {
         // TODO: Update status to Ingress in backend
-        System.out.println("Mark Ingress: " + entry);
+        LOGGER.info("Mark Ingress: " + entry);
     }
 
     private void onMarkEgress(LogEntry entry) {
         // TODO: Update status to Egress in backend
-        System.out.println("Mark Egress: " + entry);
+        LOGGER.info("Mark Egress: " + entry);
     }
 
     // ==================== DATA LOADING ====================
     private void loadInitialData() {
         // TODO: Replace dummy data with real backend call
         allLogEntries.clear();
-        for (int i = 1; i <= 1307; i++) {
+        int dummyCount = 1307; // example
+        for (int i = 1; i <= dummyCount; i++) {
+            String status = (i % 2 == 0) ? STATUS_INGRESS : STATUS_EGRESS;
             allLogEntries.add(new LogEntry(
                     "Student " + i,
                     "S" + (10000 + i),
                     "SN-ABC-" + i,
-                    i % 2 == 0 ? "Ingress" : "Egress",
+                    status,
                     "2025-05-25 08:" + (i % 60)
             ));
         }

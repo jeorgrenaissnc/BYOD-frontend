@@ -1,6 +1,7 @@
 package com.example.login;
 
 import com.example.error.ErrorController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,10 +12,21 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.application.Platform;
+
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LoginController {
+
+    private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
+    private static final String STYLESHEET_PATH = "/css/stylesheet.css";
+    private static final String DASHBOARD_FXML = "/fxml/dashboard.fxml";
+    private static final String ERROR_DIALOG_FXML = "/fxml/errorDialog.fxml";
+
+    // Hardcoded credentials – replace with real authentication
+    private static final String VALID_USERNAME = "admin";
+    private static final String VALID_PASSWORD = "password";
 
     @FXML private ImageView logoImage;
     @FXML private Label appTitleLabel;
@@ -30,14 +42,28 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+        addStylesheetToScene();
         setupEventHandlers();
         setupInputValidation();
         Platform.runLater(() -> usernameField.requestFocus());
     }
 
+    private void addStylesheetToScene() {
+        Scene scene = usernameField.getScene();
+        if (scene != null) {
+            String css = getClass().getResource(STYLESHEET_PATH).toExternalForm();
+            if (!scene.getStylesheets().contains(css)) {
+                scene.getStylesheets().add(css);
+            }
+        } else {
+            LOGGER.warning("Scene not available for stylesheet injection");
+        }
+    }
+
     private void setupEventHandlers() {
         loginButton.setOnAction(event -> handleLogin());
         cancelButton.setOnAction(event -> handleCancel());
+        // Pressing Enter in either field triggers login
         passwordField.setOnAction(event -> handleLogin());
         usernameField.setOnAction(event -> handleLogin());
     }
@@ -76,13 +102,15 @@ public class LoginController {
     }
 
     private boolean authenticate(String username, String password) {
-        return "admin".equals(username) && "password".equals(password);
+        // Replace with real authentication (database, LDAP, etc.)
+        return VALID_USERNAME.equals(username) && VALID_PASSWORD.equals(password);
     }
 
     private void loginSuccess() {
         clearErrorStyles();
-        System.out.println("Login successful! Username: " + usernameField.getText());
+        LOGGER.info("Login successful for user: " + usernameField.getText());
 
+        // Close login window
         Stage loginStage = (Stage) cancelButton.getScene().getWindow();
         loginStage.close();
 
@@ -91,19 +119,24 @@ public class LoginController {
 
     private void openDashboard() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(DASHBOARD_FXML));
             Parent root = loader.load();
 
             Stage dashboardStage = new Stage();
             dashboardStage.setTitle("BYOD Monitoring System - Dashboard");
-            dashboardStage.setScene(new Scene(root));
-            dashboardStage.getScene().getStylesheets().add(
-                    getClass().getResource("/css/stylesheet.css").toExternalForm()
-            );
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
+            dashboardStage.setScene(scene);
             dashboardStage.centerOnScreen();
+
+            // ========== DISABLE MAXIMIZED MODE ==========
+            dashboardStage.setMaximized(false);
+            // Optionally allow resizing but not forced maximized
+            dashboardStage.setResizable(true);
+
             dashboardStage.show();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to load dashboard", e);
             showErrorDialog("Loading Error", "Failed to Load Dashboard",
                     "Unable to load the main dashboard. Please check the application setup.",
                     e.getMessage(), null);
@@ -116,14 +149,16 @@ public class LoginController {
         clearErrorStyles();
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/errorDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(ERROR_DIALOG_FXML));
             StackPane root = loader.load();
 
             errorDialogController = loader.getController();
             errorDialogController.setTitle(title);
             errorDialogController.setSubtitle(subtitle);
             errorDialogController.setErrorMessage(message);
-            errorDialogController.setErrorDetail(details);
+            if (details != null && !details.isBlank()) {
+                errorDialogController.setErrorDetail(details);
+            }
 
             Stage dialogStage = new Stage();
             dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -138,15 +173,14 @@ public class LoginController {
             dialogStage.showAndWait();
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.WARNING, "Could not load custom error dialog, using fallback Alert", e);
             Alert fallback = new Alert(Alert.AlertType.ERROR);
             fallback.setTitle(title);
             fallback.setHeaderText(subtitle);
-            fallback.setContentText(message);
+            fallback.setContentText(message + (details != null ? "\nDetails: " + details : ""));
             fallback.showAndWait();
         }
 
-        // Highlight the problematic field
         if (erroredControl != null) {
             erroredControl.getStyleClass().add("error-field");
             erroredControl.requestFocus();
@@ -167,6 +201,8 @@ public class LoginController {
 
     private void closeWindow() {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
+        if (stage != null) {
+            stage.close();
+        }
     }
 }

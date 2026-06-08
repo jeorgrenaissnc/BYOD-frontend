@@ -33,25 +33,29 @@
     /* Chart background */
     -color-chart-bg: white;
     -color-border-card: lightgray;
+
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-smoothing-type: gray;
 }
 
 .background {
     -fx-background-color: -color-bg-default;
 }
 
-Label {
+.label {
+    -fx-font-family: "Arial", sans-serif;
     -fx-font-size: 16px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-fg-default;
 }
 
-.text{
+.text {
     -fx-font-size: 16px;
     -fx-text-fill: -color-fg-default;
 }
 
-
-TextField, PasswordField {
+.text-field,
+.password-field {
     -fx-background-color: -color-bg-overlay;
     -fx-background-radius: 10px;
     -fx-border-color: lightgray;
@@ -129,7 +133,7 @@ TextField:focused, PasswordField:focused {
     -fx-background-color: rgba(128, 0, 0, 0.2);
 }
 
-/*Dashboard*/
+/* Dashboard */
 .navbar {
     -fx-background-color: #800000;
 }
@@ -147,13 +151,13 @@ TextField:focused, PasswordField:focused {
 
 .nav-button:hover {
     -fx-background-color: -color-accent-border;
-    -fx-text-fill:-color-fg-default;
+    -fx-text-fill: -color-fg-default;
 }
 
 .nav-button:pressed {
     -fx-background-color: -color-accent-border;
     -fx-text-fill: -color-fg-default;
-    -fx-border-color:  -color-bg-overlay;
+    -fx-border-color: -color-bg-overlay;
     -fx-border-width: 2px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
@@ -244,7 +248,7 @@ TextField:focused, PasswordField:focused {
     -fx-border-width: 1px;
 }
 
-/* Status variants (set these classes dynamically in controller) */
+/* Status variants */
 .sync-status-live {
     -fx-background-color: rgba(98, 184, 111, 0.15);
     -fx-text-fill: -color-status-success;
@@ -335,12 +339,10 @@ TextField:focused, PasswordField:focused {
     -fx-padding: 5px;
 }
 
-/* Ingress bars (first series) */
 .default-color0.chart-bar {
     -fx-bar-fill: -color-status-success;
 }
 
-/* Egress bars (second series) */
 .default-color1.chart-bar {
     -fx-bar-fill: -color-status-error;
 }
@@ -360,14 +362,12 @@ TextField:focused, PasswordField:focused {
     -fx-background-color: transparent;
 }
 
-/* Section title "Latest log entries" */
 .log-title {
     -fx-font-size: 18px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-fg-default;
 }
 
-/* "See all" link/button*/
 .log-see-all {
     -fx-text-fill: -color-accent;
     -fx-font-size: 13px;
@@ -408,33 +408,29 @@ TextField:focused, PasswordField:focused {
     -fx-faint-focus-color: -color-accent-border-alpha;
 }
 
-/* Optional: Hover effect for log entries */
 .log-entry:hover {
     -fx-background-color: rgba(212, 175, 55, 0.05);
     -fx-cursor: hand;
 }
-/* Log entry name (e.g., "John Michael Santos") */
+
 .log-name {
     -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-fg-default;
 }
 
-/* Log entry ID/student number (e.g., "2024-00125") */
 .log-id {
     -fx-font-size: 12px;
     -fx-text-fill: -color-fg-muted;
     -fx-padding: 2px 0 0 0;
 }
 
-/* Log entry time text (e.g., "Out 08:15 AM") */
-.log-time,.log-status {
+.log-time, .log-status {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: -color-status-inactive;
 }
 
-/* Shared pill background for status and time labels */
 .log-status-in, .log-status-out,
 .log-time-in, .log-time-out {
     -fx-background-radius: 20px;
@@ -443,15 +439,13 @@ TextField:focused, PasswordField:focused {
     -fx-font-size: 13px;
 }
 
-/* In variant: green background with opacity (adjust alpha as needed) */
 .log-status-in, .log-time-in {
-    -fx-background-color: rgba(98, 184, 111, 0.15);  /* -color-status-success with 15% opacity */
+    -fx-background-color: rgba(98, 184, 111, 0.15);
     -fx-text-fill: -color-status-success;
 }
 
-/* Out variant: error red background with opacity */
 .log-status-out, .log-time-out {
-    -fx-background-color: rgba(240, 71, 71, 0.15);   /* -color-status-error with 15% opacity */
+    -fx-background-color: rgba(240, 71, 71, 0.15);
     -fx-text-fill: -color-status-error;
 }
 
@@ -477,14 +471,12 @@ TextField:focused, PasswordField:focused {
     -fx-alignment: CENTER;
 }
 
-/* Hover effect */
 .action-button:hover {
     -fx-background-color: -color-accent-border;
     -fx-text-fill: -color-fg-default;
     -fx-border-color: -color-accent-border;
 }
 
-/* Pressed effect */
 .action-button:pressed {
     -fx-background-color: -color-accent-pressed;
     -fx-border-color: -color-accent-pressed;
@@ -493,7 +485,6 @@ TextField:focused, PasswordField:focused {
     -fx-scale-y: 0.98;
 }
 
-/* Focused state */
 .action-button:focused {
     -fx-focus-color: -color-accent-border;
     -fx-faint-focus-color: -color-accent-border-alpha;
@@ -563,7 +554,8 @@ TextField:focused, PasswordField:focused {
 .separator {
     -fx-background-color: -color-border-default;
 }
-.search-bar{
+
+.search-bar {
     -fx-background-color: -color-bg-overlay;
     -fx-text-fill: -color-fg-muted;
     -fx-font-size: 16px;
@@ -591,14 +583,14 @@ TextField:focused, PasswordField:focused {
 }
 
 .filter-button:hover {
-    -fx-background-color: derive(-color-bg-overlay, -10%);  /* 10% darker */
+    -fx-background-color: derive(-color-bg-overlay, -10%);
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0.2, 0, 2);
 }
 
 .filter-button:pressed {
-    -fx-background-color: derive(-color-bg-overlay, -20%);  /* even darker */
+    -fx-background-color: derive(-color-bg-overlay, -20%);
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.3), 6, 0.2, 0, 1);
-    -fx-translate-y: 1px;  /* subtle press-down effect */
+    -fx-translate-y: 1px;
 }
 
 .filter-button:focused {
@@ -607,7 +599,7 @@ TextField:focused, PasswordField:focused {
     -fx-border-radius: 10px;
 }
 
-.monitoring-table{
+.monitoring-table {
     -fx-border-color: transparent transparent -color-border-default transparent;
     -fx-border-width: 0 0 1px 0;
     -fx-background-color: transparent;
@@ -617,12 +609,12 @@ TextField:focused, PasswordField:focused {
     -fx-font-size: 14px;
     -fx-text-fill: -color-fg-default;
     -fx-font-weight: bold;
-    -fx-padding: 0 15 0 0;
+    -fx-padding: 0 15px 0 0;
     -fx-alignment: center-left;
 }
 
 .pagination-control {
-    -fx-spacing: 8;
+    -fx-spacing: 8px;
     -fx-alignment: center;
 }
 
@@ -631,11 +623,11 @@ TextField:focused, PasswordField:focused {
     -fx-text-fill: -color-fg-default;
     -fx-font-size: 12px;
     -fx-font-weight: normal;
-    -fx-padding: 5 10 5 10;
+    -fx-padding: 5px 10px 5px 10px;
     -fx-cursor: hand;
-    -fx-background-radius: 6;
-    -fx-border-radius: 6;
-    -fx-border-width: 1;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-width: 1px;
     -fx-border-color: -color-accent;
     -fx-effect: null;
 }
@@ -656,22 +648,22 @@ TextField:focused, PasswordField:focused {
     -fx-text-fill: -color-primary;
     -fx-font-weight: bold;
     -fx-border-color: derive(-color-primary, 20%);
-    -fx-border-width: 1;
+    -fx-border-width: 1px;
 }
 
 .pagination-ellipsis {
     -fx-text-fill: derive(-color-fg-default, -30%);
     -fx-font-size: 14px;
-    -fx-padding: 5 5 5 5;
+    -fx-padding: 5px;
     -fx-font-weight: normal;
 }
 
 .pagination-bar {
     -fx-background-color: -color-bg-overlay;
-    -fx-padding: 10 15 10 15;
-    -fx-background-radius: 8;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 8px;
     -fx-alignment: center-left;
-    -fx-spacing: 20;
+    -fx-spacing: 20px;
 }
 
 .table-edit {
@@ -684,7 +676,7 @@ TextField:focused, PasswordField:focused {
     -fx-alignment: center;
 }
 
-.table-status{
+.table-status {
     -fx-background-color: transparent;
     -fx-background-radius: 40px;
     -fx-font-size: 12px;
@@ -702,20 +694,20 @@ TextField:focused, PasswordField:focused {
 }
 
 .table-edit-in {
-    -fx-background-color: rgba(98, 184, 111, 0.15);  /* -color-status-success with 15% opacity */
+    -fx-background-color: rgba(98, 184, 111, 0.15);
     -fx-text-fill: -color-status-success;
 }
 
 .table-edit-out {
-    -fx-background-color: rgba(240, 71, 71, 0.15);   /* -color-status-error with 15% opacity */
+    -fx-background-color: rgba(240, 71, 71, 0.15);
     -fx-text-fill: -color-status-error;
 }
 
 .table-edit:hover {
     -fx-background-color: -color-bg-overlay;
     -fx-border-radius: 40px;
-    -fx-border-width: 1;
-    fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-border-color: gray;
 }
 
 .table-action {
