@@ -1,6 +1,5 @@
 package com.example.login;
 
-import com.example.error.ErrorController;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,10 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -22,7 +18,6 @@ public class LoginController {
     private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
     private static final String STYLESHEET_PATH = "/css/stylesheet.css";
     private static final String DASHBOARD_FXML = "/fxml/dashboard.fxml";
-    private static final String ERROR_DIALOG_FXML = "/fxml/errorDialog.fxml";
 
     // Hardcoded credentials – replace with real authentication
     private static final String VALID_USERNAME = "admin";
@@ -37,8 +32,6 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Button loginButton;
     @FXML private Button cancelButton;
-
-    private ErrorController errorDialogController;
 
     @FXML
     public void initialize() {
@@ -63,7 +56,6 @@ public class LoginController {
     private void setupEventHandlers() {
         loginButton.setOnAction(event -> handleLogin());
         cancelButton.setOnAction(event -> handleCancel());
-        // Pressing Enter in either field triggers login
         passwordField.setOnAction(event -> handleLogin());
         usernameField.setOnAction(event -> handleLogin());
     }
@@ -81,28 +73,28 @@ public class LoginController {
         String password = passwordField.getText();
 
         if (username.isEmpty()) {
-            showErrorDialog("Validation Error", "Invalid Input",
-                    "Please enter username.", null, usernameField);
+            showError("Validation Error", "Invalid Input", "Please enter username.");
+            usernameField.getStyleClass().add("error-field");
+            usernameField.requestFocus();
             return;
         }
 
         if (password.isEmpty()) {
-            showErrorDialog("Validation Error", "Invalid Input",
-                    "Please enter password.", null, passwordField);
+            showError("Validation Error", "Invalid Input", "Please enter password.");
+            passwordField.getStyleClass().add("error-field");
+            passwordField.requestFocus();
             return;
         }
 
         if (authenticate(username, password)) {
             loginSuccess();
         } else {
-            showErrorDialog("Authentication Failed", "Login Error",
-                    "Invalid username or password. Please try again.",
-                    null, null);
+            showError("Authentication Failed", "Login Error",
+                    "Invalid username or password. Please try again.");
         }
     }
 
     private boolean authenticate(String username, String password) {
-        // Replace with real authentication (database, LDAP, etc.)
         return VALID_USERNAME.equals(username) && VALID_PASSWORD.equals(password);
     }
 
@@ -110,7 +102,6 @@ public class LoginController {
         clearErrorStyles();
         LOGGER.info("Login successful for user: " + usernameField.getText());
 
-        // Close login window
         Stage loginStage = (Stage) cancelButton.getScene().getWindow();
         loginStage.close();
 
@@ -128,63 +119,24 @@ public class LoginController {
             scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
             dashboardStage.setScene(scene);
             dashboardStage.centerOnScreen();
-
-            // ========== DISABLE MAXIMIZED MODE ==========
             dashboardStage.setMaximized(false);
-            // Optionally allow resizing but not forced maximized
             dashboardStage.setResizable(true);
 
             dashboardStage.show();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load dashboard", e);
-            showErrorDialog("Loading Error", "Failed to Load Dashboard",
-                    "Unable to load the main dashboard. Please check the application setup.",
-                    e.getMessage(), null);
+            showError("Loading Error", "Failed to Load Dashboard",
+                    "Unable to load the main dashboard.\n\nDetails: " + e.getMessage());
         }
     }
 
-    private void showErrorDialog(String title, String subtitle,
-                                 String message, String details,
-                                 Control erroredControl) {
-        clearErrorStyles();
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(ERROR_DIALOG_FXML));
-            StackPane root = loader.load();
-
-            errorDialogController = loader.getController();
-            errorDialogController.setTitle(title);
-            errorDialogController.setSubtitle(subtitle);
-            errorDialogController.setErrorMessage(message);
-            if (details != null && !details.isBlank()) {
-                errorDialogController.setErrorDetail(details);
-            }
-
-            Stage dialogStage = new Stage();
-            dialogStage.initModality(Modality.APPLICATION_MODAL);
-            dialogStage.initStyle(StageStyle.TRANSPARENT);
-            dialogStage.setTitle(title);
-
-            Scene scene = new Scene(root);
-            scene.setFill(null);
-            dialogStage.setScene(scene);
-            errorDialogController.setDialogStage(dialogStage);
-
-            dialogStage.showAndWait();
-
-        } catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Could not load custom error dialog, using fallback Alert", e);
-            Alert fallback = new Alert(Alert.AlertType.ERROR);
-            fallback.setTitle(title);
-            fallback.setHeaderText(subtitle);
-            fallback.setContentText(message + (details != null ? "\nDetails: " + details : ""));
-            fallback.showAndWait();
-        }
-
-        if (erroredControl != null) {
-            erroredControl.getStyleClass().add("error-field");
-            erroredControl.requestFocus();
-        }
+    // Standard error alert (replaces custom dialog)
+    private void showError(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 
     private void clearErrorStyles() {

@@ -7,8 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -77,17 +76,19 @@ public class DashboardController {
         initLogArrays();
         addStylesheetToScene();
         dateLabel.setText(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy").format(LocalDate.now()));
-
         dashboardButton.getStyleClass().add("active");
-
         loadHardcodedData();
     }
 
     private void initLogArrays() {
-        logNames[0] = logName0; logNames[1] = logName1; logNames[2] = logName2; logNames[3] = logName3; logNames[4] = logName4;
-        logIds[0] = logId0;     logIds[1] = logId1;     logIds[2] = logId2;     logIds[3] = logId3;     logIds[4] = logId4;
-        logStatuses[0] = logStatus0; logStatuses[1] = logStatus1; logStatuses[2] = logStatus2; logStatuses[3] = logStatus3; logStatuses[4] = logStatus4;
-        logTimes[0] = logTime0; logTimes[1] = logTime1; logTimes[2] = logTime2; logTimes[3] = logTime3; logTimes[4] = logTime4;
+        logNames[0] = logName0; logNames[1] = logName1; logNames[2] = logName2;
+        logNames[3] = logName3; logNames[4] = logName4;
+        logIds[0] = logId0;     logIds[1] = logId1;     logIds[2] = logId2;
+        logIds[3] = logId3;     logIds[4] = logId4;
+        logStatuses[0] = logStatus0; logStatuses[1] = logStatus1; logStatuses[2] = logStatus2;
+        logStatuses[3] = logStatus3; logStatuses[4] = logStatus4;
+        logTimes[0] = logTime0; logTimes[1] = logTime1; logTimes[2] = logTime2;
+        logTimes[3] = logTime3; logTimes[4] = logTime4;
     }
 
     private void addStylesheetToScene() {
@@ -104,16 +105,15 @@ public class DashboardController {
 
     private void loadHardcodedData() {
         updateSyncStatus(SYNC_STATUS_LOADING);
-        // Simulate a short delay to show loading state (remove in production)
         Platform.runLater(() -> {
-            // Statistics (replace with real backend call)
+            // Statistics
             totalStudentsLabel.setText("245");
             totalDevicesLabel.setText("312");
             devicesInsideLabel.setText("187");
             ingressTodayLabel.setText("42");
             egressTodayLabel.setText("38");
 
-            // Logs (replace with real data)
+            // Logs
             String[][] logs = {
                     {"John Michael Santos", "2024-00125", "📥 In", "08:15 AM"},
                     {"Maria Clara Gomez",   "2024-00456", "📤 Out", "05:30 PM"},
@@ -129,7 +129,7 @@ public class DashboardController {
                 applyStatusStyle(logStatuses[i], logTimes[i], logs[i][2]);
             }
 
-            // Chart data (replace with real data)
+            // Chart data
             String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
             int[] ingressData = {23, 31, 28, 35, 42, 18, 12};
             int[] egressData  = {20, 27, 25, 30, 38, 15, 10};
@@ -207,13 +207,13 @@ public class DashboardController {
             loginStage.show();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load login screen", e);
+            showError("Login Error", "Failed to load login screen", e.getMessage());
         }
     }
 
     @FXML
     private void handleDashboard() {
-        // Already on dashboard – maybe just refresh
-        handleRefresh();
+        handleRefresh(); // already on dashboard
     }
 
     @FXML
@@ -243,51 +243,132 @@ public class DashboardController {
             Scene scene = new Scene(root);
             scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
 
-            Stage stage = (Stage) monitoringButton.getScene().getWindow(); // reuse current stage
+            Stage stage = (Stage) monitoringButton.getScene().getWindow();
             stage.setScene(scene);
             stage.setTitle(title);
-            // Do NOT force maximized – respect the FXML’s preferred size
             stage.setMaximized(false);
             stage.centerOnScreen();
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Failed to load " + fxmlPath, e);
+            showError("Navigation Error", "Could not load view", "Failed to open " + title + "\n\n" + e.getMessage());
         }
     }
 
     // ==================== Additional Action Handlers ====================
     @FXML
     private void handleSeeAll() {
-        // TODO: Open full log view (e.g., new window or same stage)
-        LOGGER.info("See all logs clicked");
+        navigateTo(MONITORING_FXML, "Monitoring - BYOD System");
     }
 
     @FXML
     private void handleScanQr() {
         LOGGER.info("QR scan clicked");
-        // TODO: Open QR scanner dialog
+        showInfoDialog("QR Scanner", "Scan Student QR Code",
+                "This feature will open the camera to scan student QR codes for check‑in/out.");
     }
 
     @FXML
     private void handleSearch() {
-        LOGGER.info("Search clicked");
-        // TODO: Open search dialog
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(MONITORING_FXML));
+            Parent root = loader.load();
+
+            // Get the monitoring controller to access its search field
+            Object controller = loader.getController();
+
+            Stage stage = (Stage) searchButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Monitoring - BYOD System");
+            stage.centerOnScreen();
+
+            // After the scene is rendered, focus the search field
+            Platform.runLater(() -> {
+                try {
+                    // Use reflection or a public method to access the search field
+                    // Option 1: If MonitoringController has a public method focusSearchField()
+                    // ((MonitoringController) controller).focusSearchField();
+
+                    // Option 2: Direct lookup (simpler, no need to modify MonitoringController)
+                    TextField searchField = (TextField) root.lookup("#searchField");
+                    if (searchField != null) {
+                        searchField.requestFocus();
+                    } else {
+                        LOGGER.warning("Search field not found in monitoring view");
+                    }
+                } catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "Could not focus search field", e);
+                }
+            });
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load monitoring view", e);
+            showError("Navigation Error", "Could not open Monitoring",
+                    "Failed to load the monitoring view.\n\nDetails: " + e.getMessage());
+        }
     }
 
     @FXML
     private void handleIngress() {
         LOGGER.info("Manual ingress clicked");
-        // TODO: Open ingress logging dialog
+        showInfoDialog("Log Ingress", "Record Device Entry",
+                "Select a student and device to log manual ingress.");
     }
 
     @FXML
     private void handleEgress() {
         LOGGER.info("Manual egress clicked");
-        // TODO: Open egress logging dialog
+        showInfoDialog("Log Egress", "Record Device Exit",
+                "Select a student and device to log manual egress.");
     }
 
     @FXML
     private void handleExport() {
-        LOGGER.info("Export daily report clicked");
-        // TODO: Generate and save CSV/PDF
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(REPORTS_FXML));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) exportButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource(STYLESHEET_PATH).toExternalForm());
+            stage.setScene(scene);
+            stage.setTitle("Reports - BYOD System");
+            stage.centerOnScreen();
+
+            // After the scene is ready, programmatically click the "Export all" button in Reports view
+            Platform.runLater(() -> {
+                Button exportAllBtn = (Button) root.lookup("#exportAllBtn");
+                if (exportAllBtn != null) {
+                    exportAllBtn.fire();
+                } else {
+                    LOGGER.warning("exportAllBtn not found in Reports view");
+                    showError("Export Error", "Button not found",
+                            "The 'Export all' button could not be located in the Reports view.");
+                }
+            });
+
+        } catch (IOException e) {
+            LOGGER.log(Level.SEVERE, "Failed to load reports view", e);
+            showError("Navigation Error", "Could not open Reports section",
+                    "Failed to load the reports view.\n\nDetails: " + e.getMessage());
+        }
+    }
+
+    // ==================== Standard Alert Helpers ====================
+    private void showError(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void showInfoDialog(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
