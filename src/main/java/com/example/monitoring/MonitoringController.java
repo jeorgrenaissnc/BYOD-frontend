@@ -248,41 +248,98 @@ public class MonitoringController implements Initializable {
     }
 
     private void updatePageButtons() {
-        page1Button.setText(String.valueOf(currentPage));
-        page2Button.setText(String.valueOf(Math.min(currentPage + 1, totalPages)));
-        page3Button.setText(String.valueOf(Math.min(currentPage + 2, totalPages)));
-        page1Button.setDisable(currentPage >= totalPages);
-        page2Button.setDisable(currentPage + 1 > totalPages);
-        page3Button.setDisable(currentPage + 2 > totalPages);
-        ellipsisButton.setVisible(totalPages > 3 && currentPage + 2 < totalPages);
+        // Always show page 1 button
+        page1Button.setText("1");
+        page1Button.setDisable(totalPages < 1);
+        page1Button.setVisible(true);
+
+        if (totalPages <= 2) {
+            // Not enough pages for dynamic buttons
+            if (totalPages == 2) {
+                page2Button.setText("2");
+                page2Button.setDisable(false);
+                page3Button.setVisible(false);
+                page3Button.setDisable(true);
+            } else {
+                page2Button.setVisible(false);
+                page3Button.setVisible(false);
+            }
+            ellipsisButton.setVisible(false);
+            lastPageButton.setText(String.valueOf(totalPages));
+            lastPageButton.setDisable(currentPage >= totalPages);
+            prevPageButton.setDisable(currentPage == 1);
+            nextPageButton.setDisable(currentPage >= totalPages);
+            updateActivePageButton();
+            return;
+        }
+
+        // Determine the dynamic range for page2Button and page3Button
+        // They will show two consecutive pages that never include page 1,
+        // but keep the current page visible when possible.
+        int startDynamic;
+        if (currentPage <= 2) {
+            // Near the beginning: show pages 2 and 3
+            startDynamic = 2;
+        } else if (currentPage >= totalPages - 1) {
+            // Near the end: show last two pages before totalPages
+            startDynamic = totalPages - 2;
+        } else {
+            // Middle: show currentPage and currentPage+1 (or currentPage-1 and currentPage)
+            // To keep current page visible and avoid overlapping page 1:
+            if (currentPage == 2 && totalPages > 2) {
+                startDynamic = 2; // show 2,3
+            } else {
+                startDynamic = currentPage;
+                // Ensure we don't exceed totalPages - 1 for the second button
+                if (startDynamic + 1 > totalPages) {
+                    startDynamic = totalPages - 1;
+                }
+                // Also ensure we never show page 1 again
+                if (startDynamic == 1) startDynamic = 2;
+            }
+        }
+
+        int secondPage = startDynamic;
+        int thirdPage = Math.min(startDynamic + 1, totalPages);
+
+        // Avoid showing duplicate of page 1 (should never happen, but safety)
+        if (secondPage == 1) secondPage = 2;
+        if (thirdPage == 1) thirdPage = 2;
+
+        page2Button.setText(String.valueOf(secondPage));
+        page3Button.setText(String.valueOf(thirdPage));
+        page2Button.setDisable(false);
+        page3Button.setDisable(thirdPage > totalPages || thirdPage == secondPage);
+
+        // Show ellipsis only if there are more pages after thirdPage
+        boolean hasMore = thirdPage < totalPages;
+        ellipsisButton.setVisible(hasMore);
+        ellipsisButton.setDisable(!hasMore);
+
+        // Last page button
         lastPageButton.setText(String.valueOf(totalPages));
         lastPageButton.setDisable(currentPage >= totalPages);
         prevPageButton.setDisable(currentPage == 1);
         nextPageButton.setDisable(currentPage >= totalPages);
 
-        // Highlight the active page button
         updateActivePageButton();
     }
 
     private void updateActivePageButton() {
-        // Remove active class from all page buttons
         page1Button.getStyleClass().remove("active");
         page2Button.getStyleClass().remove("active");
         page3Button.getStyleClass().remove("active");
         lastPageButton.getStyleClass().remove("active");
 
-        // Determine which button corresponds to the current page
-        String currentPageStr = String.valueOf(currentPage);
-
-        if (currentPageStr.equals(page1Button.getText())) {
+        String cur = String.valueOf(currentPage);
+        if (cur.equals(page1Button.getText()))
             page1Button.getStyleClass().add("active");
-        } else if (currentPageStr.equals(page2Button.getText())) {
+        else if (cur.equals(page2Button.getText()))
             page2Button.getStyleClass().add("active");
-        } else if (currentPageStr.equals(page3Button.getText())) {
+        else if (cur.equals(page3Button.getText()))
             page3Button.getStyleClass().add("active");
-        } else if (currentPageStr.equals(lastPageButton.getText())) {
+        else if (cur.equals(lastPageButton.getText()))
             lastPageButton.getStyleClass().add("active");
-        }
     }
 
     // ==================== NAVIGATION ====================
@@ -415,8 +472,12 @@ public class MonitoringController implements Initializable {
     }
 
     @FXML private void onEllipsis() {
-        currentPage = Math.min(currentPage + 3, totalPages);
-        updatePagination();
+        // Jump to the page right after the current third page button
+        int third = Integer.parseInt(page3Button.getText());
+        if (third < totalPages) {
+            currentPage = Math.min(third + 1, totalPages);
+            updatePagination();
+        }
     }
 
     @FXML private void onLastPage() {
